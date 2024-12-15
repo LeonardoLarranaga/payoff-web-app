@@ -11,7 +11,7 @@ export default function MyResponsiveLine({data}) {
         <div style={{height: '300px', width: '100%'}}>
             <ResponsiveLine
                 data={data}
-                margin={{top: 20, right: 20, bottom: 60, left: 80}}
+                margin={{top: 20, right: 20, bottom: 60, left: 60}}
                 xScale={{type: 'point'}}
                 yScale={{
                     type: 'linear',
@@ -56,8 +56,8 @@ export default function MyResponsiveLine({data}) {
                 ]}
                 pointSize={10}
                 pointBorderWidth={2}
-                useMesh={true} // Para interacción suave
-                animate={true} // Animación al cargar
+                useMesh={true}
+                animate={true}
                 motionConfig="gentle"
                 theme={{
                     text: {

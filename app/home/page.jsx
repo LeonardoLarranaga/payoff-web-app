@@ -5,6 +5,7 @@ import pocketbase from "@/libraries/pocketbase"
 import {useEffect, useState} from "react"
 import MyResponsiveLine from "@/components/MyResponsiveLine"
 import {motion} from "framer-motion"
+import {Divider} from "@nextui-org/react"
 
 export default function Home() {
     const [totalDebt, setTotalDebt] = useState(null)
@@ -18,9 +19,8 @@ export default function Home() {
                 const user = await pocketbase.collection('users').getOne(pocketbase.authStore.record.id)
                 setTotalDebt(user.totalDebt)
                 setDebtHistory(user.debtHistory)
-                console.log(user.debtHistory)
             } catch (error) {
-                console.log(error)
+                console.error(error)
                 setFailed(true)
             }
         }
@@ -29,7 +29,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="h-full w-full">
+        <div className="min-h-screen w-full">
             <div className="flex flex-row justify-between items-center p-5">
                 <h1 className="text-4xl sm:text-3xl font-bold">
                     Payoff
@@ -37,16 +37,18 @@ export default function Home() {
                 <UserMenu/>
             </div>
 
+            <Divider className="mb-4"/>
+
             <div
-                className="flex flex-col gap-4 items-center justify-center pt-4 sm:grid sm:grid-cols-7 sm:gap-2 w-full sm:w-auto">
+                className="flex flex-col gap-4 items-center justify-center sm:grid sm:grid-cols-7 sm:gap-2 w-full sm:w-auto">
                 {totalDebt && (
                     <motion.div
-                        className="relative w-full flex flex-row items-end justify-center sm:col-span-3"
+                        className="relative w-full flex flex-row items-center sm:items-end justify-center sm:col-span-3"
                         initial={{opacity: 0, y: 20}}
                         animate={{opacity: 1, y: 0}}
                         transition={{duration: 0.8}}
                     >
-                        <div className="flex flex-col items-center mr-8">
+                        <div className="flex flex-col items-center sm:mr-8">
                             <h1 className="font-semibold text-gray-300 opacity-35 text-4xl">your balance</h1>
                             <h1 className="text-7xl font-extrabold text-center">${totalDebt}</h1>
                         </div>
@@ -55,7 +57,7 @@ export default function Home() {
 
                 {debtHistory && (
                     <motion.div
-                        className="sm:col-span-4 w-full sm:-ml-5"
+                        className="sm:col-span-4 w-full sm:-ml-6"
                         initial={{opacity: 0, y: 20}}
                         animate={{opacity: 1, y: 0}}
                         transition={{duration: 0.8}}
