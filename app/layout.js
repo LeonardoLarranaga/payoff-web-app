@@ -15,6 +15,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en" suppressHydrationWarning>
+        <head>
+            <meta name="apple-mobile-web-app-title" content="Payoff"/>
+            <title>Payoff</title>
+        </head>
         <body className={`${figtree.className} antialiased`}>
         <Providers>
             {children}
