@@ -34,10 +34,10 @@ body {
     width: 200%; /* Duplica el tamaño para evitar cortes */
     height: 200%;
     background-image: radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 1) 0px, transparent 0%),
-                      radial-gradient(at 97% 96%, hsl(200, 72%, 65%) 0px, transparent 50%),
-                      radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 1) 0px, transparent 50%),
-                      radial-gradient(at 66% 50%, hsl(205, 100%, 64%) 0px, transparent 50%),
-                      radial-gradient(at 79% 53%, rgb(78, 153, 219) 0px, transparent 50%);
+    radial-gradient(at 97% 96%, hsl(200, 72%, 65%) 0px, transparent 50%),
+    radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 1) 0px, transparent 50%),
+    radial-gradient(at 66% 50%, hsl(205, 100%, 64%) 0px, transparent 50%),
+    radial-gradient(at 79% 53%, rgb(78, 153, 219) 0px, transparent 50%);
     filter: blur(100px);
     z-index: -1;
     pointer-events: none;
@@ -51,13 +51,14 @@ body {
 }
 
 path {
-  stroke-dasharray: 5000;
-  stroke-dashoffset: 5000;
-  animation: dash 5s linear forwards;
+    stroke-dasharray: 5000;
+    stroke-dashoffset: 5000;
+    animation: dash 5s linear forwards;
+    animation-delay: 0.5s;
 }
 
 @keyframes dash {
-  to {
-    stroke-dashoffset: 0;
-  }
+    to {
+        stroke-dashoffset: 0;
+    }
 }

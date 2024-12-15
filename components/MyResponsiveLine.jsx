@@ -36,6 +36,10 @@ export default function MyResponsiveLine({data}) {
                     legend: 'Debt',
                     legendOffset: -40,
                     legendPosition: 'middle',
+                    format: (value) => `$${value}`,
+                }}
+                yFormat={value => {
+                    return `$${value}`
                 }}
                 colors={{scheme: 'category10'}}
                 enableArea={true} // Habilitar el área bajo la línea
@@ -58,7 +62,13 @@ export default function MyResponsiveLine({data}) {
                 theme={{
                     text: {
                         fill: isDarkMode ? 'white' : 'black',
-                    }
+                    },
+                    tooltip: {
+                        container: {
+                            background: isDarkMode ? 'black' : 'white',
+                            color: isDarkMode ? 'white' : 'black',
+                        },
+                    },
                 }}
             />
         </div>
