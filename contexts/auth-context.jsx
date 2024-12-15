@@ -2,8 +2,8 @@
 
 import {createContext, useContext, useEffect, useState} from "react"
 import {useRouter} from "next/navigation"
-import pocketbase from "@/libraries/pocketbase";
-import {ClientResponseError} from "pocketbase";
+import pocketbase from "@/libraries/pocketbase"
+import {ClientResponseError} from "pocketbase"
 
 const AuthContext = createContext(null)
 
@@ -12,9 +12,10 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({children}) => {
-    const [email, setEmail] = useState(null)
+    const [email, setEmail] = useState("")
     const [token, setToken] = useState(null)
     const [otpResponse, setOtpResponse] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
     const router = useRouter()
 
@@ -59,6 +60,7 @@ export const AuthProvider = ({children}) => {
         let shouldSendOtp = false
 
         try {
+            setIsLoading(true)
             const password = self.crypto.randomUUID()
             await pocketbase.collection("users").create({
                 email: email,
@@ -74,6 +76,7 @@ export const AuthProvider = ({children}) => {
             } else {
                 alert("An error occurred while trying to sign in")
                 console.error(error)
+                setIsLoading(false)
             }
         }
 
@@ -82,10 +85,12 @@ export const AuthProvider = ({children}) => {
         const otpResponse = await pocketbase.collection("users").requestOTP(email)
         if (!otpResponse.otpId) {
             alert("An error occurred while trying to request the OTP")
+            setIsLoading(false)
             return
         }
 
         setOtpResponse(otpResponse.otpId)
+        setIsLoading(false)
     }
 
     const signInWithOTP = async (email, otp, setOtp, setIsInvalid) => {
@@ -116,6 +121,8 @@ export const AuthProvider = ({children}) => {
         otpResponse,
         requestSignInWithOTP,
         signInWithOTP,
+        clearCredentials,
+        isLoading
     }
 
     return (
