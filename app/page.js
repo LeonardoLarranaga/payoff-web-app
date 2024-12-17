@@ -1,9 +1,10 @@
 'use client'
 
-import {Button, Image, Input, InputOtp} from "@nextui-org/react"
+import {Button, Image, Input} from "@nextui-org/react"
 import {useState} from "react"
 import {useAuth} from "@/contexts/auth-context"
 import {motion} from "framer-motion"
+import OtpCodeModal from "@/components/otp-code-modal"
 
 const motionVariants = {
     hidden: {opacity: 0, y: 50},
@@ -13,9 +14,7 @@ const motionVariants = {
 export default function Home() {
 
     const [email, setEmail] = useState("")
-    const [otp, setOtp] = useState("")
-    const [isInvalid, setIsInvalid] = useState(false)
-    const {otpResponse, requestSignInWithOTP, signInWithOTP, isLoading} = useAuth()
+    const { requestSignInWithOTP, isLoading } = useAuth()
 
     return (
         <div className="flex flex-col justify-center items-center h-screen text-center w-full gradient-container">
@@ -62,27 +61,9 @@ export default function Home() {
                         Receive OTP Code
                     </Button>
                 </div>
-
-                {otpResponse && (
-                    <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        transition={{duration: 0.6, ease: "easeOut"}}
-                        variants={motionVariants}
-                        className="flex flex-col items-center gap-6"
-                    >
-                        <InputOtp
-                            length={6}
-                            onValueChange={setOtp}
-                            className="pt-4"
-                            isInvalid={isInvalid}
-                            onComplete={() => signInWithOTP(email, otp, setOtp, setIsInvalid)}
-                        />
-
-                        {isInvalid && <p className="text-red-500">Invalid OTP Code</p>}
-                    </motion.div>
-                )}
             </motion.div>
+
+            <OtpCodeModal email={email}/>
         </div>
     )
 }
