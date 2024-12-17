@@ -3,25 +3,13 @@
 import {motion} from 'framer-motion'
 import {useNavigation} from "@/contexts/navigation-context"
 import {usePathname} from "next/navigation"
-import {Divider, Link} from "@nextui-org/react"
-import {Icon} from "@iconify/react"
+import {Divider} from "@nextui-org/react"
 import UserMenu from "@/components/navigation/user-menu"
+import NavigationMenuItem from "@/components/navigation/navigation-menu-item"
 
 export default function Sidebar() {
     const { menuItems, isNavigationMenuOpen } = useNavigation()
     const pathName = usePathname()
-
-    const MenuItem = ({ item }) => (
-        <Link
-            href={item.path}
-            className={`flex flex-row space-x-4 items-center p-2 rounded-lg hover:bg-zinc-100 ${
-                item.path === pathName ? 'bg-zinc-200' : ''
-            }`}
-        >
-            <Icon icon={item.icon} width="24" height="24"/>
-            <span className="font-semibold text-xl">{item.title}</span>
-        </Link>
-    )
 
     return (
         <motion.div
@@ -33,7 +21,7 @@ export default function Sidebar() {
                 <div className="flex flex-col w-full justify-between space-y-6 pt-2 px-1">
                     <div className="flex flex-col">
                         {menuItems.map((item, index) => {
-                            return <MenuItem key={index} item={item}/>
+                            return <NavigationMenuItem key={index} item={item} isSidebar={true}/>
                         })}
                     </div>
 

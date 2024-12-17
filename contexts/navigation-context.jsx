@@ -21,7 +21,10 @@ export const NavigationProvider = ({children}) => {
     const [isNavigationMenuOpen, setIsNavigationMenuOpen] = useState(
         () => JSON.parse(localStorage.getItem('isNavigationMenuOpen')) ?? false
     )
-    const [menuItems, setMenuItems] = useState(defaultMenuItems)
+
+    const [menuItems, setMenuItems] = useState(
+        () => JSON.parse(localStorage.getItem('menuItems')) ?? defaultMenuItems
+    )
 
     const toggleNavigationMenu = () => {
         setIsNavigationMenuOpen(!isNavigationMenuOpen)
@@ -31,7 +34,7 @@ export const NavigationProvider = ({children}) => {
     const value = {
         isNavigationMenuOpen,
         toggleNavigationMenu,
-        menuItems,
+        menuItems
     }
 
     return (

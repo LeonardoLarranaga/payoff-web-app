@@ -8,6 +8,7 @@ import {NavigationProvider} from "@/contexts/navigation-context"
 import Sidebar from "@/components/navigation/sidebar"
 import Header from "@/components/navigation/header"
 import MainContent from "@/app/main-content";
+import NavigationModal from "@/components/navigation/navigation-modal"
 
 export const Providers = ({children}) => {
     return (
@@ -18,6 +19,7 @@ export const Providers = ({children}) => {
                         <NavigationProvider>
                             <Sidebar/>
                             <Header/>
+                            <NavigationModal />
                             <MainContent children={children}/>
                         </NavigationProvider>
                     </ThemeProvider>
