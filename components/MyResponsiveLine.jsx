@@ -5,7 +5,6 @@ import {useIsDarkMode} from "@/contexts/dark-contest"
 export default function MyResponsiveLine({data}) {
 
     const isDarkMode = useIsDarkMode()
-    console.log(isDarkMode)
 
     return (
         <div style={{height: '300px', width: '100%'}}>

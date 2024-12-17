@@ -4,7 +4,7 @@ import {Avatar, AvatarIcon, Dropdown, DropdownItem, DropdownMenu, DropdownTrigge
 import {useAuth} from "@/contexts/auth-context"
 
 export default function UserMenu() {
-    const {email, clearCredentials} = useAuth()
+    const { email, clearCredentials } = useAuth()
 
     return (
         <Dropdown backdrop="blur">

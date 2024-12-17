@@ -7,8 +7,8 @@ import {motion} from "framer-motion"
 import OtpCodeModal from "@/components/otp-code-modal"
 
 const motionVariants = {
-    hidden: {opacity: 0, y: 50},
-    visible: {opacity: 1, y: 0},
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
 }
 
 export default function Home() {
@@ -50,6 +50,7 @@ export default function Home() {
                         isInvalid={false}
                         isClearable
                         onValueChange={setEmail}
+                        onKeyUp={(e) => e.key === "Enter" && requestSignInWithOTP(email)}
                     />
 
                     <Button
