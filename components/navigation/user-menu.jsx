@@ -9,22 +9,25 @@ export default function UserMenu() {
     return (
         <Dropdown backdrop="blur">
             <DropdownTrigger>
-                <Avatar
-                    classNames={{
-                        base: "bg-gradient-to-br from-[#3A8BFDFF] to-[#47B3FFFF]",
-                        icon: "text-black/60",
-                    }}
-                    icon={<AvatarIcon />}
-                    isBordered
-                />
+                <div className="ml-2 flex flex-row items-center hover:cursor-pointer    ">
+                    <Avatar
+                        classNames={{
+                            base: "bg-gradient-to-br from-[#3A8BFDFF] to-[#47B3FFFF]",
+                            icon: "text-black/60",
+                        }}
+                        icon={<AvatarIcon />}
+                        isBordered
+                    />
+
+                    <div className="ml-3 flex flex-col text-sm">
+                        <p className="font-semibold">Signed in as</p>
+                        <p className="font-bold">{email}</p>
+                    </div>
+                </div>
+
             </DropdownTrigger>
 
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem key="profile" className="h-14 gap-2">
-                    <p className="font-semibold">Signed in as</p>
-                    <p className="font-bold">{email}</p>
-                </DropdownItem>
-
                 <DropdownItem
                     className="text-danger font-semibold"
                     color="danger"

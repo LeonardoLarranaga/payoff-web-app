@@ -105,6 +105,8 @@ export const AuthProvider = ({children}) => {
             }
             localStorage.setItem('auth.email', email.email)
             localStorage.setItem('auth.token', auth.token)
+            setToken(auth.token)
+            setEmail(email.email)
             pocketbase.authStore.save(auth.token, auth.record)
             setOtpResponse(null)
             router.push("home")

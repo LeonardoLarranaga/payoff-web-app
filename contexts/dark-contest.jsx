@@ -10,6 +10,7 @@ export const useIsDarkMode = () => {
 }
 
 export const DarkProvider = ({children}) => {
+
     const { theme } = useTheme()
     const [isDarkMode, setIsDarkMode] = useState(false)
 
