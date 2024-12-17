@@ -103,7 +103,7 @@ export const AuthProvider = ({children}) => {
                 setIsInvalid(true)
                 return
             }
-            localStorage.setItem('auth.email', email)
+            localStorage.setItem('auth.email', email.email)
             localStorage.setItem('auth.token', auth.token)
             pocketbase.authStore.save(auth.token, auth.record)
             setOtpResponse(null)
