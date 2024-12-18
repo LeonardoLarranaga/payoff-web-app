@@ -1,7 +1,7 @@
 'use client'
 
 import {createContext, useContext, useEffect} from "react"
-import {useCookies} from "react-cookie";
+import {useCookies} from "react-cookie"
 
 const NavigationContext = createContext(null)
 
@@ -23,6 +23,10 @@ export const NavigationProvider = ({children}) => {
 
     const toggleNavigationMenu = () => {
         setCookie('isNavigationMenuOpen', cookies.isNavigationMenuOpen !== true)
+    }
+
+    const setIsNavigationMenuOpen = (isOpen) => {
+        setCookie('isNavigationMenuOpen', isOpen)
     }
 
     const isNavigationMenuOpen = cookies.isNavigationMenuOpen === true
@@ -47,6 +51,7 @@ export const NavigationProvider = ({children}) => {
     const value = {
         isNavigationMenuOpen,
         toggleNavigationMenu,
+        setIsNavigationMenuOpen,
         menuItems
     }
 

@@ -16,10 +16,10 @@ export default function NavigationModal() {
         setShowHeader(pathname !== '/')
     }, [pathname])
 
-    if (!showHeader) return null
+    if (!showHeader || pathname === '/') return null
 
     return (
-        <header className="sm:hidden block sticky top-0 z-50 h-[4.5rem] backdrop-blur-2xl items-center w-full">
+        <header className={`sm:hidden block sticky top-0 z-50 h-[4.5rem] backdrop-blur-2xl items-center w-full`}>
             <div className='flex items-center justify-between h-full px-4'>
                 <h1 className="font-bold text-4xl">
                     Payoff

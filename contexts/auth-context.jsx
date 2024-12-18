@@ -4,6 +4,7 @@ import {createContext, useContext, useEffect, useState} from "react"
 import {useRouter} from "next/navigation"
 import pocketbase from "@/libraries/pocketbase"
 import {ClientResponseError} from "pocketbase"
+import {useCookies} from "react-cookie"
 
 const AuthContext = createContext(null)
 
@@ -12,21 +13,24 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({children}) => {
-    const [email, setEmail] = useState("")
-    const [token, setToken] = useState(null)
     const [otpResponse, setOtpResponse] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+
+    const [cookies, setCookie, removeCookie] = useCookies(['email', 'token',])
+
+    const email = cookies.email
+    const token = cookies.token
+    const setEmail = (email) => setCookie('email', email)
+    const setToken = (token) => setCookie('token', token)
+
 
     const router = useRouter()
 
     useEffect(() => {
         try {
-            if (!token || !email)
-            if (pocketbase.authStore.token && pocketbase.authStore.isValid) {
-                setEmail(localStorage.getItem('auth.email'))
-                setToken(localStorage.getItem('auth.token'))
+            if (pocketbase.authStore.token && pocketbase.authStore.isValid)
                 if (window.location.pathname === '/') router.push("home")
-            } else clearCredentials()
+                else clearCredentials()
         } catch (error) {
             console.log("Error loading auth store:", error)
             clearCredentials()
@@ -35,8 +39,8 @@ export const AuthProvider = ({children}) => {
 
     function clearCredentials() {
         pocketbase.authStore.clear()
-        localStorage.removeItem('auth.email')
-        localStorage.removeItem('auth.token')
+        removeCookie('email')
+        removeCookie('token')
         setEmail(null)
         setToken(null)
         setOtpResponse(null)
@@ -103,8 +107,6 @@ export const AuthProvider = ({children}) => {
                 setIsInvalid(true)
                 return
             }
-            localStorage.setItem('auth.email', email.email)
-            localStorage.setItem('auth.token', auth.token)
             setToken(auth.token)
             setEmail(email.email)
             pocketbase.authStore.save(auth.token, auth.record)

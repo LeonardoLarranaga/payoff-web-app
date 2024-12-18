@@ -6,18 +6,21 @@ import {usePathname} from "next/navigation"
 import UserMenu from "@/components/navigation/user-menu"
 import NavigationMenuItem from "@/components/navigation/navigation-menu-item"
 import {useEffect, useState} from "react"
+import {useAuth} from "@/contexts/auth-context"
 
 export default function Sidebar() {
-    const { menuItems, isNavigationMenuOpen } = useNavigation()
+    const { menuItems, isNavigationMenuOpen, setIsNavigationMenuOpen } = useNavigation()
+    const { token } = useAuth()
 
     const [showSidebar, setShowSidebar] = useState(true)
     const pathname = usePathname()
 
     useEffect(() => {
         setShowSidebar(pathname !== '/')
+        if (!token) setIsNavigationMenuOpen(pathname !== '/')
     }, [pathname])
 
-    if (!showSidebar) return null
+    if (!showSidebar || pathname === '/') return null
 
     return (
         <motion.div
