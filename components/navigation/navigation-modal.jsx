@@ -1,12 +1,22 @@
 import {Divider, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react"
 import {useNavigation} from "@/contexts/navigation-context"
-import NavigationMenuItem from "@/components/navigation/navigation-menu-item";
-import UserMenu from "@/components/navigation/user-menu";
+import NavigationMenuItem from "@/components/navigation/navigation-menu-item"
+import UserMenu from "@/components/navigation/user-menu"
+import {useEffect, useState} from "react"
+import {usePathname} from "next/navigation"
 
 export default function NavigationModal() {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { menuItems } = useNavigation()
+    const [showHeader, setShowHeader] = useState(true)
+    const pathname = usePathname()
+
+    useEffect(() => {
+        setShowHeader(pathname !== '/')
+    }, [pathname])
+
+    if (!showHeader) return null
 
     return (
         <header className="sm:hidden block sticky top-0 z-50 h-[4.5rem] backdrop-blur-2xl items-center w-full">

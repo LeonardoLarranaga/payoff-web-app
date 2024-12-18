@@ -18,7 +18,7 @@ export default function Header() {
     if (!showHeader) return null
 
     return (
-        <header className="hidden md:block sticky top-0 z-40 h-12 backdrop-blur-2xl items-center w-full">
+        <header className={`hidden md:block sticky top-0 z-40 h-12 backdrop-blur-2xl items-center w-full ${pathname === '/' ? 'opacity-0' : ''}`}>
             <div className='w-56 flex items-center justify-between h-full pl-4'>
                 <h1 className="font-bold text-3xl">
                     Payoff

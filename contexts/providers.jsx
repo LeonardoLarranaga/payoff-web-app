@@ -9,10 +9,12 @@ import Sidebar from "@/components/navigation/sidebar"
 import Header from "@/components/navigation/header"
 import MainContent from "@/app/main-content";
 import NavigationModal from "@/components/navigation/navigation-modal"
+import {CookiesProvider} from "react-cookie"
 
 export const Providers = ({children}) => {
     return (
         <NextUIProvider>
+            <CookiesProvider />
             <AuthProvider>
                 <DarkProvider>
                     <ThemeProvider>

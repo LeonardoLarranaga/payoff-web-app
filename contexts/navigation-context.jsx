@@ -1,6 +1,7 @@
 'use client'
 
-import {createContext, useContext, useState} from "react"
+import {createContext, useContext, useEffect} from "react"
+import {useCookies} from "react-cookie";
 
 const NavigationContext = createContext(null)
 
@@ -18,18 +19,30 @@ const defaultMenuItems = [
 
 export const NavigationProvider = ({children}) => {
 
-    const [isNavigationMenuOpen, setIsNavigationMenuOpen] = useState(
-        () => JSON.parse(localStorage.getItem('isNavigationMenuOpen')) ?? false
-    )
-
-    const [menuItems, setMenuItems] = useState(
-        () => JSON.parse(localStorage.getItem('menuItems')) ?? defaultMenuItems
-    )
+    const [cookies, setCookie] = useCookies(['isNavigationMenuOpen', 'menuItems'])
 
     const toggleNavigationMenu = () => {
-        setIsNavigationMenuOpen(!isNavigationMenuOpen)
-        localStorage.setItem('isNavigationMenuOpen', JSON.stringify(!isNavigationMenuOpen))
+        setCookie('isNavigationMenuOpen', cookies.isNavigationMenuOpen !== true)
     }
+
+    const isNavigationMenuOpen = cookies.isNavigationMenuOpen === true
+    const menuItems = cookies.menuItems || defaultMenuItems
+
+    useEffect(() => {
+        if (!cookies.menuItems) {
+            setCookie('menuItems', defaultMenuItems)
+        }
+
+        const handleResize = () => {
+            if (window.innerWidth <= 700) {
+                setCookie('isNavigationMenuOpen', false)
+            }
+        }
+
+        window.addEventListener('resize', handleResize)
+        handleResize()
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const value = {
         isNavigationMenuOpen,

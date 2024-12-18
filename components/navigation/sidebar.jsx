@@ -5,16 +5,25 @@ import {useNavigation} from "@/contexts/navigation-context"
 import {usePathname} from "next/navigation"
 import UserMenu from "@/components/navigation/user-menu"
 import NavigationMenuItem from "@/components/navigation/navigation-menu-item"
+import {useEffect, useState} from "react"
 
 export default function Sidebar() {
     const { menuItems, isNavigationMenuOpen } = useNavigation()
-    const pathName = usePathname()
+
+    const [showSidebar, setShowSidebar] = useState(true)
+    const pathname = usePathname()
+
+    useEffect(() => {
+        setShowSidebar(pathname !== '/')
+    }, [pathname])
+
+    if (!showSidebar) return null
 
     return (
         <motion.div
             animate={{ left: !isNavigationMenuOpen ? '-100%' : '0' }}
             transition={{ type: 'spring', duration: 0.45 }}
-            className="w-56 backdrop-blur-2xl h-full top-0 left-0 fixed z-30 flex flex-col"
+            className={`w-56 backdrop-blur-2xl h-full top-0 left-0 fixed z-30 flex flex-col ${pathname === '/' ? 'opacity-0' : ''}`}
         >
             <div className="flex flex-row max-h-svh min-h-svh">
                 <div className="flex flex-col w-full justify-between space-y-6 pt-2 px-1 mt-12">

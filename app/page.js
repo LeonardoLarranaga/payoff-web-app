@@ -23,7 +23,7 @@ export default function Home() {
             <motion.div
                 initial="hidden"
                 animate="visible"
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                transition={{duration: 0.6, ease: "easeOut"}}
                 variants={motionVariants}
                 className="flex flex-col items-center gap-6"
             >
@@ -65,6 +65,16 @@ export default function Home() {
             </motion.div>
 
             <OtpCodeModal email={email}/>
+
+            <footer className="absolute bottom-0 w-full bg-amber-50 bg-opacity-20 text-center py-4">
+                <div className="wave min-h-full min-w-full opacity-40 shadow-2xl" />
+                <p className="font-semibold">
+                    Payoff uses cookies to save your login and your debts in the sidebar.
+                </p>
+                <p className="text-xs opacity-70">
+                    Made with ❤️ and Chicken Bakes.
+                </p>
+            </footer>
         </div>
     )
 }
