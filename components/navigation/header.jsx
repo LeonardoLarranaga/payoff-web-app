@@ -19,7 +19,7 @@ export default function Header() {
     if (!showHeader) return null
 
     return (
-        <header className="hidden md:block sticky top-0 z-50 h-12 backdrop-blur-2xl items-center w-full">
+        <header className="hidden md:block sticky top-0 z-40 h-12 backdrop-blur-2xl items-center w-full">
             <div className='w-56 flex items-center justify-between h-full pl-4'>
                 <h1 className="font-bold text-3xl">
                     Payoff
@@ -34,10 +34,10 @@ export default function Header() {
                     <Icon icon="lucide:panel-left" width="26" height="26"/>
                 </button>
 
-                <Divider orientation="vertical" className="-ml-8" />
+                {/*<Divider orientation="vertical" className="-ml-8" />*/}
             </div>
 
-            <Divider className="w-full"/>
+            {/*<Divider className="w-full"/>*/}
         </header>
     )
 }
