@@ -7,7 +7,7 @@ export default function MyResponsiveLine({data}) {
     const isDarkMode = useIsDarkMode()
 
     return (
-        <div style={{height: '300px', width: '100%'}}>
+        <div className="line-chart-container" style={{height: '300px', width: '100%'}}>
             <ResponsiveLine
                 data={data}
                 margin={{top: 20, right: 20, bottom: 60, left: 60}}

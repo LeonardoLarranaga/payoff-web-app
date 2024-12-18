@@ -3,7 +3,6 @@
 import {motion} from 'framer-motion'
 import {useNavigation} from "@/contexts/navigation-context"
 import {usePathname} from "next/navigation"
-import {Divider} from "@nextui-org/react"
 import UserMenu from "@/components/navigation/user-menu"
 import NavigationMenuItem from "@/components/navigation/navigation-menu-item"
 
@@ -15,7 +14,7 @@ export default function Sidebar() {
         <motion.div
             animate={{ left: !isNavigationMenuOpen ? '-100%' : '0' }}
             transition={{ type: 'spring', duration: 0.45 }}
-            className="w-56 backdrop-blur-2xl h-full top-0 left-0 fixed z-30 flex flex-col shadow-lg"
+            className="w-56 backdrop-blur-2xl h-full top-0 left-0 fixed z-30 flex flex-col"
         >
             <div className="flex flex-row max-h-svh min-h-svh">
                 <div className="flex flex-col w-full justify-between space-y-6 pt-2 px-1 mt-12">
@@ -25,7 +24,7 @@ export default function Sidebar() {
                         })}
                     </div>
 
-                    <div className="pb-20">
+                    <div className="pb-10">
                         <UserMenu />
                     </div>
                 </div>

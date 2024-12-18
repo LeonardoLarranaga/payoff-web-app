@@ -1,5 +1,4 @@
 import {Divider, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react"
-import {Icon} from "@iconify/react"
 import {useNavigation} from "@/contexts/navigation-context"
 import NavigationMenuItem from "@/components/navigation/navigation-menu-item";
 import UserMenu from "@/components/navigation/user-menu";
@@ -21,7 +20,7 @@ export default function NavigationModal() {
                     suppressContentEditableWarning
                     className="ml-auto"
                 >
-                    <Icon icon="ic:round-menu-open" width="40" height="40" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18h11c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1m0-5h8c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1M3 7c0 .55.45 1 1 1h11c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1m17.3 7.88L17.42 12l2.88-2.88a.996.996 0 1 0-1.41-1.41L15.3 11.3a.996.996 0 0 0 0 1.41l3.59 3.59c.39.39 1.02.39 1.41 0c.38-.39.39-1.03 0-1.42"/></svg>
                 </button>
             </div>
 
@@ -52,7 +51,7 @@ export default function NavigationModal() {
                         },
                     },
                 }}
-                closeButton={ <Icon icon="line-md:close" width="60" height="60" color="primary" /> }
+                closeButton={<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeDasharray="12" strokeDashoffset="12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 12l7 7M12 12l-7 -7M12 12l-7 7M12 12l7 -7"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="12;0"/></path></svg>}
             >
                 <ModalContent>
                     {() => (
@@ -64,7 +63,7 @@ export default function NavigationModal() {
                             </ModalHeader>
 
                             <ModalBody>
-                                <div className="flex flex-col justify-between h-full">
+                            <div className="flex flex-col justify-between h-full">
                                     <div className="flex flex-col w-full justify-between space-y-6 pt-2 px-1 h-full">
                                         <div className="flex flex-col h-full">
                                             {menuItems.map((item, index) => {

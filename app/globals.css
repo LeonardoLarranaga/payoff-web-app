@@ -50,7 +50,7 @@ body {
     100% { background-position: 100% 100%; transform: rotate(360deg);}
 }
 
-path {
+.line-chart-container path {
     stroke-dasharray: 5000;
     stroke-dashoffset: 5000;
     animation: dash 5s linear forwards;
