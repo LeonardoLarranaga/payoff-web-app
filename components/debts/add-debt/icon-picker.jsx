@@ -40,7 +40,7 @@ export default function IconPicker({ icon, setIcon, color }) {
     }, [isOpened])
 
     return (
-        <Popover onOpenChange={setIsOpened}>
+        <Popover isOpen={isOpened} onOpenChange={setIsOpened}>
             <PopoverTrigger className="grid-cols-1 h-14">
                 <Button
                     variant="bordered"
@@ -76,7 +76,7 @@ export default function IconPicker({ icon, setIcon, color }) {
                             <Button
                                 key={index}
                                 variant="bordered"
-                                onPress={() => setIcon(icon)}
+                                onPress={() => {setIcon(icon); setIsOpened(false)}}
                                 className="aspect-square"
                                 isIconOnly
                             >

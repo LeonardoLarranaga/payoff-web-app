@@ -4,6 +4,7 @@ import NavigationMenuItem from "@/components/navigation/navigation-menu-item"
 import UserMenu from "@/components/navigation/user-menu"
 import {useEffect, useState} from "react"
 import {usePathname} from "next/navigation"
+import AddDebt from "@/components/debts/add-debt/add-debt";
 
 export default function NavigationModal() {
 
@@ -41,6 +42,7 @@ export default function NavigationModal() {
                 onClose={onClose}
                 size="full"
                 backdrop="blur"
+                scrollBehavior="inside"
                 motionProps={{
                     variants: {
                         enter: {
@@ -73,20 +75,21 @@ export default function NavigationModal() {
                             </ModalHeader>
 
                             <ModalBody>
-                            <div className="flex flex-col justify-between h-full">
-                                    <div className="flex flex-col w-full justify-between space-y-6 pt-2 px-1 h-full">
-                                        <div className="flex flex-col h-full">
+                                <div className="flex flex-col justify-between h-full">
+                                    <div className="flex flex-col w-full justify-between space-y-6 px-1 max-h-[80%]">
+                                        <div className="flex flex-col h-full overflow-y-scroll">
                                             {menuItems.map((item, index) => {
                                                 return <NavigationMenuItem key={index} item={item} isSidebar={true}/>
                                             })}
                                         </div>
                                     </div>
 
-                                    <div className="pb-10">
+                                    <AddDebt mobile={true}/>
+
+                                    <div className="pb-1">
                                         <UserMenu />
                                     </div>
                                 </div>
-
                             </ModalBody>
                         </>
                     )}
