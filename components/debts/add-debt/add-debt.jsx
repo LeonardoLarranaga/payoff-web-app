@@ -1,13 +1,58 @@
-import {Button, Input, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react"
+import {Button, Input, Modal, ModalBody, ModalContent, ModalHeader, Switch, useDisclosure} from "@nextui-org/react"
 import useRefs from "react-use-refs"
 import {useState} from "react"
 import IconPicker from "@/components/debts/add-debt/icon-picker"
+import {HexColorPicker} from "react-colorful"
+import pocketbase from "@/libraries/pocketbase"
 
 export default function AddDebt() {
-    const {isOpen, onOpen, onOpenChange} = useDisclosure()
+    const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     const [titleRef] = useRefs()
+
     const [icon, setIcon] = useState("")
+    const [color, setColor] = useState(null)
+    const [error, setError] = useState(null)
+
+    const onAddDebt = async (onClose) => {
+        try {
+            setError(null)
+            if (!titleRef.current.value.trim()) {
+                setError(new Error("Please enter a title for the debt"))
+                return
+            }
+            const data = {
+                user: pocketbase.authStore.model.id,
+                transactions: [],
+                title: titleRef.current.value,
+                icon: icon,
+                totalAmount: 0.0,
+                debtHistory: JSON.stringify([
+                    {
+                        id: 1,
+                        color: color,
+                        data: [
+                            {
+                                x: Intl.DateTimeFormat('es-ES', {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric'
+                                }).format(new Date()),
+                                y: 0.0
+                            }
+                        ]
+                    }
+                ]),
+                color: color
+            }
+
+            const record = await pocketbase.collection("debts").create(data)
+            if (!record.ok) return
+            onClose()
+        } catch (error) {
+            setError(error)
+        }
+    }
 
     return (
         <>
@@ -23,13 +68,13 @@ export default function AddDebt() {
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
                 <ModalContent>
-                    {() => (
+                    {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">New Debt</ModalHeader>
 
                             <ModalBody>
                                 <div className="w-full flex grid-cols-7 gap-4 items-center h-14">
-                                    <IconPicker icon={icon} setIcon={setIcon}/>
+                                    <IconPicker icon={icon} setIcon={setIcon} color={color}/>
 
                                     <Input
                                         label="Debt Title"
@@ -39,10 +84,24 @@ export default function AddDebt() {
                                     />
                                 </div>
 
+                                <Switch
+                                    className="font-bold"
+                                    onValueChange={(isSelected) => setColor(isSelected ? "#2671D9" : null)}
+                                >
+                                    Custom Color
+                                </Switch>
 
+                                { color != null && <HexColorPicker color={color} onChange={setColor} /> }
 
+                                <Button
+                                    onPress={() => onAddDebt(onClose)}
+                                    color="primary"
+                                >
+                                    Add Debt
+                                </Button>
+
+                                {error != null && <p className="text-red-500">{error.message}</p>}
                             </ModalBody>
-
                         </>
                     )}
                 </ModalContent>

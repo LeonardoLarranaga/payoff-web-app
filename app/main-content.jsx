@@ -3,7 +3,7 @@ import {useNavigation} from "@/contexts/navigation-context"
 import {usePathname} from "next/navigation"
 
 export default function MainContent({children}) {
-    const { isNavigationMenuOpen } = useNavigation();
+    const { isNavigationMenuOpen } = useNavigation()
     const pathname = usePathname()
 
     return (

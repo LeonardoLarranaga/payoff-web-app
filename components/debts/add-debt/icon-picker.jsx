@@ -2,7 +2,7 @@ import {Button, Input, Popover, PopoverContent, PopoverTrigger} from "@nextui-or
 import {Icon} from "@iconify/react"
 import {useEffect, useRef, useState} from "react"
 
-export default function IconPicker({icon, setIcon}) {
+export default function IconPicker({ icon, setIcon, color }) {
 
     const inputRef = useRef(null)
     const [icons, setIcons] = useState([])
@@ -48,7 +48,12 @@ export default function IconPicker({icon, setIcon}) {
                     endContent={<svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m8 10l4 4l4-4"></path></svg>}
                 >
                     {icon.trim() !== '' ?
-                        <Icon icon={icon} width={128} height={128} />
+                        <Icon
+                            icon={icon}
+                            width={128}
+                            height={128}
+                            color={color}
+                        />
                      :
                         <p>Icon</p>
                     }
