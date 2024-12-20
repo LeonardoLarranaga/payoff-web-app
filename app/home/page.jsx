@@ -9,14 +9,16 @@ export default function Home() {
     const [totalDebt, setTotalDebt] = useState(null)
     const [failed, setFailed] = useState(false)
     const [debtHistory, setDebtHistory] = useState(null)
+    const [hasFetch, setHasFetch] = useState(false)
 
     useEffect(() => {
-        const fetchTotalDebt = async () => {
+        async function fetchTotalDebt() {
+            if (hasFetch) return
             try {
-                console.log(pocketbase.authStore.record)
                 const user = await pocketbase.collection('users').getOne(pocketbase.authStore.record.id)
                 setTotalDebt(user.totalDebt)
                 setDebtHistory(user.debtHistory)
+                setHasFetch(true)
             } catch (error) {
                 console.error(error)
                 setFailed(true)
@@ -24,7 +26,7 @@ export default function Home() {
         }
 
         fetchTotalDebt().catch(console.error)
-    }, []);
+    }, [])
 
     return (
         <div className="max-h-svh min-h-svh w-full">

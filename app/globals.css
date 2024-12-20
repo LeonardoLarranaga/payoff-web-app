@@ -38,7 +38,6 @@ body {
     radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 1) 0px, transparent 50%),
     radial-gradient(at 66% 50%, hsl(205, 100%, 64%) 0px, transparent 50%),
     radial-gradient(at 79% 53%, rgb(78, 153, 219) 0px, transparent 50%);
-    filter: blur(100px);
     z-index: -1;
     pointer-events: none;
     animation: move-gradient-background 5s infinite alternate-reverse;

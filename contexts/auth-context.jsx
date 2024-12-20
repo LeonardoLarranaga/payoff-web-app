@@ -28,9 +28,9 @@ export const AuthProvider = ({children}) => {
 
     useEffect(() => {
         try {
-            if (pocketbase.authStore.token && pocketbase.authStore.isValid)
+            if (pocketbase.authStore.token && pocketbase.authStore.isValid) {
                 if (window.location.pathname === '/') router.push("home")
-                else clearCredentials()
+            } else clearCredentials()
         } catch (error) {
             console.log("Error loading auth store:", error)
             clearCredentials()
@@ -69,7 +69,19 @@ export const AuthProvider = ({children}) => {
             await pocketbase.collection("users").create({
                 email: email,
                 password: password,
-                passwordConfirm: password
+                passwordConfirm: password,
+                debtHistory: JSON.stringify([
+                    {
+                        id: 1,
+                        color: "hsl(215, 70%, 50%)",
+                        data: [
+                            {
+                                x: Intl.DateTimeFormat('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date()),
+                                y: 0.0
+                            }
+                        ]
+                    }
+                ]),
             })
             shouldSendOtp = true
         } catch (error) {
