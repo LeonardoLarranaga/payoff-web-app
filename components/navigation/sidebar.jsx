@@ -36,7 +36,7 @@ export default function Sidebar() {
                         })}
                     </div>
 
-                    <div className="pb-10">
+                    <div className="pb-5">
                         <UserMenu />
                     </div>
                 </div>

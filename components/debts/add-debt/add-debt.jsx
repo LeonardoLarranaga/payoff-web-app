@@ -47,10 +47,15 @@ export default function AddDebt({mobile}) {
             }
 
             const record = await pocketbase.collection("debts").create(data)
-            if (!record.ok) return
+            if (record.message) {
+                setError(new Error(record.message))
+                return
+            }
+            if (!record.id) return
             onClose()
         } catch (error) {
             setError(error)
+            console.log(error)
         }
     }
 
@@ -68,7 +73,14 @@ export default function AddDebt({mobile}) {
 
             <Modal
                 isOpen={isOpen}
-                onOpenChange={onOpenChange}
+                onOpenChange={(isOpen) => {
+                    onOpenChange()
+                    if (!isOpen) {
+                        setError(null)
+                        setIcon("")
+                        setColor(null)
+                    }
+                }}
                 placement="center"
                 className={`${mobile ? "mx-4" : ""}`}
             >
@@ -90,13 +102,19 @@ export default function AddDebt({mobile}) {
                                 </div>
 
                                 <Switch
-                                    className="font-bold"
+                                    className="font-bold my-3"
                                     onValueChange={(isSelected) => setColor(isSelected ? "#2671D9" : null)}
                                 >
                                     Custom Color
                                 </Switch>
 
-                                { color != null && <HexColorPicker color={color} onChange={setColor} /> }
+                                { color != null &&
+                                    <HexColorPicker
+                                        className="pb-3"
+                                        color={color}
+                                        onChange={setColor}
+                                    />
+                                }
 
                                 <Button
                                     onPress={() => onAddDebt(onClose)}

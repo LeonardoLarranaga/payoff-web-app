@@ -12,8 +12,9 @@ export default function Home() {
     const [hasFetch, setHasFetch] = useState(false)
 
     useEffect(() => {
+        if (hasFetch) return
+
         async function fetchTotalDebt() {
-            if (hasFetch) return
             try {
                 const user = await pocketbase.collection('users').getOne(pocketbase.authStore.record.id)
                 setTotalDebt(user.totalDebt)
@@ -26,7 +27,7 @@ export default function Home() {
         }
 
         fetchTotalDebt().catch(console.error)
-    }, [])
+    }, [hasFetch])
 
     return (
         <div className="max-h-svh min-h-svh w-full">
