@@ -29,7 +29,7 @@ export default function Sidebar() {
         <motion.div
             animate={{ left: !isNavigationMenuOpen ? '-100%' : '0.5rem' }}
             transition={{ type: 'spring', duration: 0.45 }}
-            className={`w-56 backdrop-blur-2xl rounded-lg border-2 border-[var(--sidebar-border)] bg-[var(--sidebar-background)] fixed z-30 flex flex-col overflow-y-scroll ${pathname === '/' ? 'opacity-0' : ''}`}
+            className={`${showSidebar ? 'w-56' : 'w-0'} backdrop-blur-2xl rounded-lg border-2 border-[var(--sidebar-border)] bg-[var(--sidebar-background)] fixed z-30 flex flex-col overflow-y-scroll ${pathname === '/' ? 'opacity-0' : ''}`}
             style={{
                 top: '0.5rem',
                 left: '0.5rem',

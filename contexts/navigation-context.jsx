@@ -32,7 +32,7 @@ export const NavigationProvider = ({children}) => {
 
     useEffect(() => {
         const handleResize = () => {
-            setCookie('isNavigationMenuOpen', window.innerWidth > 700)
+            setCookie('isNavigationMenuOpen', document.documentElement.clientWidth > 700)
         }
 
         window.addEventListener('resize', handleResize)
