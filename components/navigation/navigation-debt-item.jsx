@@ -29,7 +29,12 @@ export default function NavigationDebtItem({index, item}) {
             onClick={handleOnPress}
         >
             <div className="h-full flex flex-row items-center justify-start gap-2">
-                <Icon icon={item.icon} width="24" height="24"/>
+                <Icon
+                    icon={item.icon}
+                    width="24"
+                    height="24"
+                    color={item.color}
+                />
                 {item.title}
             </div>
         </button>
