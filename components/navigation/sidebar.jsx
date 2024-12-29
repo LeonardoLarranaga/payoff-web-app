@@ -4,9 +4,9 @@ import {motion} from 'framer-motion'
 import {useNavigation} from "@/contexts/navigation-context"
 import {usePathname} from "next/navigation"
 import UserMenu from "@/components/navigation/user-menu"
-import NavigationMenuItem from "@/components/navigation/navigation-menu-item"
 import {useEffect, useState} from "react"
 import {useAuth} from "@/contexts/auth-context"
+import AddDebt from "@/components/debts/add-debt/add-debt"
 
 export default function Sidebar() {
     const { menuItems, isNavigationMenuOpen, setIsNavigationMenuOpen } = useNavigation()
@@ -14,6 +14,8 @@ export default function Sidebar() {
 
     const [showSidebar, setShowSidebar] = useState(true)
     const pathname = usePathname()
+
+    const [showDebts, setShowDebts] = useState(false)
 
     useEffect(() => {
         setShowSidebar(pathname !== '/')
@@ -24,26 +26,31 @@ export default function Sidebar() {
 
     return (
         <motion.div
-            animate={{ left: !isNavigationMenuOpen ? '-100%' : '0' }}
+            animate={{ left: !isNavigationMenuOpen ? '-100%' : '0.5rem' }}
             transition={{ type: 'spring', duration: 0.45 }}
-            className={`w-56 backdrop-blur-2xl h-full top-0 left-0 fixed z-30 flex flex-col ${pathname === '/' ? 'opacity-0' : ''}`}
+            className={`w-56 backdrop-blur-2xl rounded-lg border-2 border-[var(--sidebar-border)] bg-[var(--sidebar-background)] fixed z-30 flex flex-col ${pathname === '/' ? 'opacity-0' : ''}`}
+            style={{
+                top: '0.5rem',
+                left: '0.5rem',
+                right: '0.5rem',
+                bottom: '0.5rem'
+            }}
         >
-            <div className="flex flex-row max-h-svh min-h-svh">
-                <div className="flex flex-col w-full justify-between space-y-6 pt-2 px-1 mt-12">
-                    <div className="flex flex-col">
-                        {menuItems.map((item, index) => {
-                            return <NavigationMenuItem key={index} item={item} isSidebar={true}/>
-                        })}
-                    </div>
+            <div className="flex flex-col w-full h-full justify-between space-y-6 pt-1 px-2 pb-2">
+                <div>
+                    <img src="/images/icon.png" alt="App icon" className="w-10 h-10 mt-2 mb-4"/>
 
-                    <div className="pb-5">
-                        <UserMenu />
+                    <div className="flex flex-row justify-between items-center">
+                        <h1 className="text-xl">Debts</h1>
+
+                        <div>
+                            <AddDebt />
+                        </div>
                     </div>
                 </div>
 
-                {/*<Divider orientation="vertical" className="h-full"/>*/}
+                <UserMenu/>
             </div>
-
         </motion.div>
     )
 }

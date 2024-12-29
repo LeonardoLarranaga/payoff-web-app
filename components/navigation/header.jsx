@@ -19,7 +19,7 @@ export default function Header() {
     if (!showHeader) return null
 
     return (
-        <header className={`hidden md:block sticky top-0 z-40 h-12 backdrop-blur-2xl items-center w-full ${pathname === '/' ? 'opacity-0' : ''}`}>
+        <header className={`hidden md:block sticky top-0 z-40 h-12 items-center w-full ${pathname === '/' ? 'opacity-0' : ''}`}>
             <div className="flex flex-row w-full items-center justify-between pr-4">
                 <div className='w-56 flex flex-row items-center justify-between h-12 pl-4'>
                     <h1 className="font-bold text-3xl">
@@ -34,10 +34,16 @@ export default function Header() {
                     {/*<Divider orientation="vertical" className="-ml-8" />*/}
                 </div>
 
-                <div className="pt-2">
-                    <AddDebt />
+                <div
+                    className="backdrop-blur-2xl flex justify-end"
+                    style={{
+                        width: 'calc(100% - 14rem)',
+                    }}
+                >
+                    <div className="pt-2">
+                        <AddDebt/>
+                    </div>
                 </div>
-
             </div>
 
 

@@ -6,7 +6,6 @@ import {NextUIProvider} from "@nextui-org/react"
 import {ThemeProvider} from "next-themes"
 import {NavigationProvider} from "@/contexts/navigation-context"
 import Sidebar from "@/components/navigation/sidebar"
-import Header from "@/components/navigation/header"
 import MainContent from "@/app/main-content";
 import NavigationModal from "@/components/navigation/navigation-modal"
 import {CookiesProvider} from "react-cookie"
@@ -20,7 +19,7 @@ export const Providers = ({children}) => {
                     <ThemeProvider>
                         <NavigationProvider>
                             <Sidebar/>
-                            <Header/>
+                            {/*<Header/>*/}
                             <NavigationModal />
                             <MainContent children={children}/>
                         </NavigationProvider>

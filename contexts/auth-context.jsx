@@ -23,7 +23,6 @@ export const AuthProvider = ({children}) => {
     const setEmail = (email) => setCookie('email', email)
     const setToken = (token) => setCookie('token', token)
 
-
     const router = useRouter()
 
     useEffect(() => {

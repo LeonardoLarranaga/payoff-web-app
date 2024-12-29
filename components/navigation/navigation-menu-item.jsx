@@ -8,12 +8,13 @@ export default function NavigationMenuItem({item, isSidebar}) {
 
     const handleOnPress = (event) => {
         if (item.path === pathname) event.preventDefault()
+        else console.log("Navigating to:", item.path)
     }
 
     return (
         <Link
             href={item.path}
-            onPress={handleOnPress}
+            onClick={(event) => handleOnPress(event)}
             className={`flex flex-row space-x-4 items-center p-2 rounded-lg hover:bg-zinc-100 ${
                 item.path === pathname ? 'bg-zinc-200' : ''
             }`}

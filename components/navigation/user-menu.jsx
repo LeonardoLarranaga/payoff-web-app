@@ -9,7 +9,7 @@ export default function UserMenu() {
     return (
         <Dropdown backdrop="blur">
             <DropdownTrigger>
-                <div className="ml-2 flex flex-row items-center hover:cursor-pointer    ">
+                <div className="flex flex-row items-center hover:cursor-pointer    ">
                     <Avatar
                         classNames={{
                             base: "bg-gradient-to-br from-[#3A8BFDFF] to-[#47B3FFFF]",

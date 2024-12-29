@@ -16,6 +16,7 @@ export default function Home() {
 
         async function fetchTotalDebt() {
             try {
+                if (hasFetch) return
                 const user = await pocketbase.collection('users').getOne(pocketbase.authStore.record.id)
                 setTotalDebt(user.totalDebt)
                 setDebtHistory(user.debtHistory)
