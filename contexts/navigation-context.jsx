@@ -14,7 +14,7 @@ export const useNavigation = () => {
 
 export const NavigationProvider = ({children}) => {
 
-    const [cookies, setCookie] = useCookies(['isNavigationMenuOpen', 'menuItems'])
+    const [cookies, setCookie] = useCookies(['isNavigationMenuOpen'])
 
     const toggleNavigationMenu = () => {
         setCookie('isNavigationMenuOpen', cookies.isNavigationMenuOpen !== true)
@@ -27,17 +27,8 @@ export const NavigationProvider = ({children}) => {
     const { token } = useAuth()
 
     const isNavigationMenuOpen = cookies.isNavigationMenuOpen === true
-    // const menuItems = cookies.menuItems
-    const [debtItems, setDebtItems] = useLocalStorage('menuItems', [])
 
-    // useEffect(() => {
-    //     if (cookies.menuItems) {
-    //         console.log("Menu items loaded from cookies", cookies.menuItems)
-    //     } else {
-    //         console.log("Setting default menu items")
-    //         setCookie('menuItems', JSON.stringify(defaultMenuItems))
-    //     }
-    // }, [cookies.menuItems])
+    const [debtItems, setDebtItems] = useLocalStorage('menuItems', [])
 
     useEffect(() => {
         const handleResize = () => {
@@ -51,18 +42,57 @@ export const NavigationProvider = ({children}) => {
 
     useEffect(() => {
         if (token) {
+            // Fetch debts for the first time
+            const fetchDebts = async () => {
+                try {
+                    const records = await pocketbase.collection("debts").getFullList({
+                        sort: "created"
+                    })
+
+                    setDebtItems(records.map((record) => ({
+                        id: record.id,
+                        title: record.title,
+                        icon: record.icon,
+                        color: record.color,
+                        path: `/debt/${record.id}`
+                    })))
+                } catch (error) {
+                    console.log("Error fetching debts:", error)
+                }
+            }
+
+            fetchDebts().catch()
+
+            // Subscribe to debts collection
             pocketbase.collection("debts").subscribe("*", function (e) {
-                console.log("Debts collection updated:", e)
-                setCookie("menuItems", JSON.stringify([...cookies.menuItems, {
-                    id: e.record.id,
-                    title: e.record.title,
-                    path: `/debt/${e.record.id}`,
-                    icon: e.record.icon
-                }]))
+                switch (e.action) {
+                    case "create":
+                        setDebtItems((previous) => [...previous, {
+                            id: e.record.id,
+                            title: e.record.title,
+                            icon: e.record.icon,
+                            color: e.record.color,
+                            path: `/debt/${e.record.id}`
+                        }])
+                        break
+
+                    case "update":
+                        setDebtItems((previous) => previous.map((item) => item.id === e.record.id ? {
+                            id: e.record.id,
+                            title: e.record.title,
+                            icon: e.record.icon,
+                            color: e.record.color,
+                            path: `/debt/${e.record.id}`
+                        } : item))
+                        break
+
+                    case "delete":
+                        setDebtItems((previous) => previous.filter((item) => item.id !== e.record.id))
+                        break
+                }
             }).catch()
 
             return () => {
-                console.log("Unsubscribing from debts collection")
                 pocketbase.collection("debts").unsubscribe().catch()
             }
         }

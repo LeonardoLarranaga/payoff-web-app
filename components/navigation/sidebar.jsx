@@ -7,9 +7,10 @@ import UserMenu from "@/components/navigation/user-menu"
 import {useEffect, useState} from "react"
 import {useAuth} from "@/contexts/auth-context"
 import AddDebt from "@/components/debts/add-debt/add-debt"
+import NavigationDebtItem from "@/components/navigation/navigation-debt-item"
 
 export default function Sidebar() {
-    const { menuItems, isNavigationMenuOpen, setIsNavigationMenuOpen } = useNavigation()
+    const { debtItems, isNavigationMenuOpen, setIsNavigationMenuOpen } = useNavigation()
     const { token } = useAuth()
 
     const [showSidebar, setShowSidebar] = useState(true)
@@ -47,9 +48,15 @@ export default function Sidebar() {
                             <AddDebt />
                         </div>
                     </div>
+
+                    <div className="flex flex-col space-y-2 mt-4">
+                        {debtItems.map((item, index) => (
+                            <NavigationDebtItem key={index} item={item} />
+                        ))}
+                    </div>
                 </div>
 
-                <UserMenu/>
+                <UserMenu />
             </div>
         </motion.div>
     )
