@@ -1,17 +1,20 @@
 import {Divider, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react"
 import {useNavigation} from "@/contexts/navigation-context"
-import NavigationMenuItem from "@/components/navigation/navigation-menu-item"
 import UserMenu from "@/components/navigation/user-menu"
 import {useEffect, useState} from "react"
 import {usePathname} from "next/navigation"
 import AddDebt from "@/components/debts/add-debt/add-debt";
+import NavigationDebtItem from "@/components/navigation/navigation-debt-item";
+import {motion} from "framer-motion";
 
 export default function NavigationModal() {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { menuItems } = useNavigation()
+    const { debtItems } = useNavigation()
     const [showHeader, setShowHeader] = useState(true)
     const pathname = usePathname()
+
+    const [showDebts, setShowDebts] = useState(true)
 
     useEffect(() => {
         setShowHeader(pathname !== '/')
@@ -66,7 +69,7 @@ export default function NavigationModal() {
                 closeButton={<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeDasharray="12" strokeDashoffset="12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 12l7 7M12 12l-7 -7M12 12l-7 7M12 12l7 -7"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="12;0"/></path></svg>}
             >
                 <ModalContent>
-                    {() => (
+                    {(onClose) => (
                         <>
                             <ModalHeader>
                                 <h1 className="font-bold text-4xl">
@@ -75,19 +78,44 @@ export default function NavigationModal() {
                             </ModalHeader>
 
                             <ModalBody>
-                                <div className="flex flex-col justify-between h-full">
-                                    <div className="flex flex-col w-full justify-between space-y-6 px-1 max-h-[80%]">
-                                        <div className="flex flex-col h-full overflow-y-scroll">
-                                            {menuItems.map((item, index) => {
-                                                return <NavigationMenuItem key={index} item={item} isSidebar={true}/>
-                                            })}
+                                <div className="flex flex-col h-full justify-between">
+                                    <div className="flex flex-col">
+                                        <div className="flex flex-row justify-between items-center">
+                                            <h1 className="text-xl">Debts</h1>
+
+                                            <div className="items-center flex flex-row space-x-4">
+                                                <button
+                                                    onClick={() => setShowDebts(!showDebts)}
+                                                    className={`transform transition-transform duration-300 ease-in-out ${
+                                                        showDebts ? 'rotate-180' : 'rotate-90'
+                                                    }`}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24}
+                                                         viewBox="0 0 24 24">
+                                                        <path fill="none" stroke="currentColor" strokeLinecap="round"
+                                                              strokeLinejoin="round" strokeWidth={2}
+                                                              d="m18 15l-6-6l-6 6"></path>
+                                                    </svg>
+                                                </button>
+
+                                                <AddDebt mobile={true}/>
+                                            </div>
                                         </div>
+
+                                        <motion.div
+                                            className="flex flex-col justify-start space-y-2 mt-2 max-h-[80%] overflow-y-scroll"
+                                            initial={{opacity: 0, height: 0}}
+                                            animate={{opacity: showDebts ? 1 : 0, height: showDebts ? "18rem" : 0}}
+                                            exit={{opacity: 0, height: 0}}
+                                            transition={{duration: 0.3, ease: "easeInOut"}}
+                                        >
+                                            {debtItems.map((item, index) => (
+                                                <NavigationDebtItem key={index} item={item} onClose={onClose} />
+                                            ))}
+                                        </motion.div>
                                     </div>
 
-                                    <AddDebt mobile={true}/>
-
                                     <div className="pb-1">
-                                        <UserMenu />
+                                        <UserMenu/>
                                     </div>
                                 </div>
                             </ModalBody>

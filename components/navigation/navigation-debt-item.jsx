@@ -2,7 +2,7 @@ import {usePathname, useRouter} from "next/navigation"
 import {Icon} from "@iconify/react"
 import {useIsDarkMode} from "@/contexts/dark-contest"
 
-export default function NavigationDebtItem({index, item}) {
+export default function NavigationDebtItem({index, item, onClose}) {
     const pathname = usePathname()
     const router = useRouter()
     const isDarkMode= useIsDarkMode()
@@ -10,6 +10,7 @@ export default function NavigationDebtItem({index, item}) {
     const handleOnPress = () => {
         if (item.path === pathname) return
         router.push(item.path)
+        if (onClose) onClose()
     }
 
     const backgroundColor = () => {
@@ -22,20 +23,25 @@ export default function NavigationDebtItem({index, item}) {
         }
     }
 
+    const iconSize = onClose ? 32 : 24
+    const textSize = onClose ? 'text-xl' : ''
+    const itemHeight = onClose ? 'h-10' : 'h-8'
+
     return (
         <button
             key={index}
-            className={`h-8 rounded-lg flex-shrink-0 ${backgroundColor()}`}
+            className={`${itemHeight} rounded-lg flex-shrink-0 ${backgroundColor()}`}
             onClick={handleOnPress}
         >
             <div className="h-full flex flex-row items-center justify-start gap-2">
                 <Icon
                     icon={item.icon}
-                    width="24"
-                    height="24"
+                    width={iconSize}
+                    height={iconSize}
                     color={item.color}
                 />
-                {item.title}
+                <h1 className={textSize}>{item.title}</h1>
+
             </div>
         </button>
     )
