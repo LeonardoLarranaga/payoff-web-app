@@ -4,6 +4,7 @@ import {useState} from "react"
 import IconPicker from "@/components/debts/add-debt/icon-picker"
 import {HexColorPicker} from "react-colorful"
 import pocketbase from "@/libraries/pocketbase"
+import {useRouter} from "next/navigation"
 
 export const AddIcon = ({width, height}) => {
     return (<svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 24 24">
@@ -24,6 +25,8 @@ export default function AddDebt({mobile}) {
     const [icon, setIcon] = useState("")
     const [color, setColor] = useState(null)
     const [error, setError] = useState(null)
+
+    const router = useRouter()
 
     const onAddDebt = async (onClose) => {
         try {
@@ -64,6 +67,7 @@ export default function AddDebt({mobile}) {
             }
             if (!record.id) return
             onClose()
+            router.push(`/debt/${record.id}`)
         } catch (error) {
             setError(error)
             console.log(error)
@@ -94,7 +98,6 @@ export default function AddDebt({mobile}) {
                     <AddIcon width="20" height="20"/>
                 </Button>
             }
-
 
             <Modal
                 isOpen={isOpen}

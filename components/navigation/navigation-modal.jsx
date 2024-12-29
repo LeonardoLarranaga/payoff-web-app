@@ -22,6 +22,16 @@ export default function NavigationModal() {
 
     if (!showHeader || pathname === '/') return null
 
+    useEffect(() => {
+        const handleResize = () => {
+            if (document.documentElement.clientWidth > 700) onClose()
+        }
+
+        window.addEventListener('resize', handleResize)
+        handleResize()
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
     return (
         <header className={`sm:hidden block sticky top-0 z-50 h-[4.5rem] backdrop-blur-2xl items-center w-full`}>
             <div className='flex items-center justify-between h-full px-4'>
@@ -66,15 +76,14 @@ export default function NavigationModal() {
                         },
                     },
                 }}
-                closeButton={<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeDasharray="12" strokeDashoffset="12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 12l7 7M12 12l-7 -7M12 12l-7 7M12 12l7 -7"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="12;0"/></path></svg>}
+                closeButton={<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeDasharray="12" strokeDashoffset="12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 12l7 7M12 12l-7 -7M12 12l-7 7M12 12l7 -7"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="12;0"/></path></svg>}
             >
                 <ModalContent>
                     {(onClose) => (
                         <>
                             <ModalHeader>
-                                <h1 className="font-bold text-4xl">
-                                    Payoff
-                                </h1>
+                                <img src="/images/icon.png" alt="App icon" className="w-10 h-10 -ml-1"/>
+
                             </ModalHeader>
 
                             <ModalBody>
