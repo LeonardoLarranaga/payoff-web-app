@@ -16,7 +16,7 @@ export default function Sidebar() {
     const [showSidebar, setShowSidebar] = useState(true)
     const pathname = usePathname()
 
-    const [showDebts, setShowDebts] = useState(false)
+    const [showDebts, setShowDebts] = useState(true)
 
     useEffect(() => {
         setShowSidebar(pathname !== '/')
@@ -29,7 +29,7 @@ export default function Sidebar() {
         <motion.div
             animate={{ left: !isNavigationMenuOpen ? '-100%' : '0.5rem' }}
             transition={{ type: 'spring', duration: 0.45 }}
-            className={`w-56 backdrop-blur-2xl rounded-lg border-2 border-[var(--sidebar-border)] bg-[var(--sidebar-background)] fixed z-30 flex flex-col ${pathname === '/' ? 'opacity-0' : ''}`}
+            className={`w-56 backdrop-blur-2xl rounded-lg border-2 border-[var(--sidebar-border)] bg-[var(--sidebar-background)] fixed z-30 flex flex-col overflow-y-scroll ${pathname === '/' ? 'opacity-0' : ''}`}
             style={{
                 top: '0.5rem',
                 left: '0.5rem',
@@ -44,19 +44,35 @@ export default function Sidebar() {
                     <div className="flex flex-row justify-between items-center">
                         <h1 className="text-xl">Debts</h1>
 
-                        <div>
-                            <AddDebt />
+                        <div className="items-center space-x-2">
+                            <button
+                                onClick={() => setShowDebts(!showDebts)}
+                                className={`transform transition-transform duration-300 ease-in-out ${
+                                    showDebts ? 'rotate-180' : 'rotate-90'
+                                } translate-y-1`}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
+                                          strokeWidth={2} d="m18 15l-6-6l-6 6"></path>
+                                </svg>
+                            </button>
+                            <AddDebt/>
                         </div>
                     </div>
 
-                    <div className="flex flex-col space-y-2 mt-4">
+                    <motion.div
+                        className="flex flex-col space-y-2 mt-2 max-h-[280px] overflow-y-scroll"
+                        initial={{opacity: 0, height: 0}}
+                        animate={{opacity: showDebts ? 1 : 0, height: showDebts ? "18rem" : 0}}
+                        exit={{opacity: 0, height: 0}}
+                        transition={{duration: 0.3, ease: "easeInOut"}}
+                    >
                         {debtItems.map((item, index) => (
-                            <NavigationDebtItem key={index} item={item} />
+                            <NavigationDebtItem key={index} item={item}/>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
 
-                <UserMenu />
+                <UserMenu/>
             </div>
         </motion.div>
     )
