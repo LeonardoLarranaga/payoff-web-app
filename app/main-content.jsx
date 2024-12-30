@@ -10,7 +10,7 @@ export default function MainContent({children}) {
         <motion.div
             className={pathname !== "/" && window.innerWidth >= 700 ? "pt-1 pl-1" : ""}
             animate={{
-                marginLeft: isNavigationMenuOpen && window.innerWidth >= 700 ? '14rem' : '0',
+                marginLeft: pathname !== "/" && isNavigationMenuOpen && window.innerWidth >= 700 ? '14rem' : '0',
             }}
             transition={{ type: 'spring', duration: 0.45 }}
         >

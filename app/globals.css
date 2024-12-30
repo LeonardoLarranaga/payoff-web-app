@@ -47,6 +47,18 @@ body {
     animation: move-gradient-background 5s infinite alternate-reverse;
 }
 
+@media (max-width: 768px) {
+    .gradient-background {
+        filter: blur(200px);
+    }
+}
+
+@media (min-width: 769px) {
+    .gradient-background {
+        filter: none;
+    }
+}
+
 @keyframes move-gradient-background {
     0% { background-position: 0 0; transform: rotate(0deg); }
     50% { background-position: 50% 50%; transform: rotate(180deg);}
