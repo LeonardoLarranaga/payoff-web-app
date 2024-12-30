@@ -45,11 +45,13 @@ export default function AddDebt({mobile, debt, setDebt}) {
     useEffect(() => {
         if (isOpen && debt) {
             setIcon(debt.icon)
-            setColor(debt.color)
             titleRef.current.value = debt.title
-            setSwitchSelected(debt.color != null && debt.color.trim())
+            if (debt.color != null && debt.color.trim()) {
+                setSwitchSelected(true)
+                setColor(debt.color)
+            }
         }
-    }, [isOpen])
+    }, [isOpen, debt])
 
     const onAddDebt = async (onClose) => {
         try {
