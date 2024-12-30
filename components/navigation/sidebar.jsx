@@ -39,7 +39,9 @@ export default function Sidebar() {
         >
             <div className="flex flex-col w-full h-full justify-between space-y-6 pt-1 px-2 pb-2">
                 <div>
-                    <img src="/images/icon.png" alt="App icon" className="w-10 h-10 mt-2 mb-4"/>
+                    <a href={'/home'}>
+                        <img src="/images/icon.png" alt="App icon" className="w-10 h-10 mt-2 mb-2"/>
+                    </a>
 
                     <div className="flex flex-row justify-between items-center">
                         <h1 className="text-xl">Debts</h1>

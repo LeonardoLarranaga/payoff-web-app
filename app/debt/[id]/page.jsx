@@ -30,7 +30,7 @@ export default function GetDebt({params}) {
         fetchDebt().catch()
     }, [id])
 
-    const notFoundView = (
+    const notFoundScreen = (
         <div className="max-h-svh min-h-svh w-full flex items-center justify-center">
             <div className="flex flex-col items-center text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24">
@@ -42,14 +42,11 @@ export default function GetDebt({params}) {
         </div>
     )
 
-    if (error === "404") return notFoundView
+    if (error === "404") return notFoundScreen
 
     return (
         <div className="max-h-svh min-h-svh w-full overflow-y-auto">
             <div className="sm:pl-4 pt-4">
-
-                {/*{error === "404" && notFoundView}*/}
-
                 <div className="flex flex-row items-center justify-between w-full">
                     <div className="flex">
                         <Icon

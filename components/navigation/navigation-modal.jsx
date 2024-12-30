@@ -2,10 +2,10 @@ import {Divider, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} fro
 import {useNavigation} from "@/contexts/navigation-context"
 import UserMenu from "@/components/navigation/user-menu"
 import {useEffect, useState} from "react"
-import {usePathname} from "next/navigation"
-import AddDebt from "@/components/debts/add-debt/add-debt";
-import NavigationDebtItem from "@/components/navigation/navigation-debt-item";
-import {motion} from "framer-motion";
+import {usePathname, useRouter} from "next/navigation"
+import AddDebt from "@/components/debts/add-debt/add-debt"
+import NavigationDebtItem from "@/components/navigation/navigation-debt-item"
+import {motion} from "framer-motion"
 
 export default function NavigationModal() {
 
@@ -13,6 +13,7 @@ export default function NavigationModal() {
     const { debtItems } = useNavigation()
     const [showHeader, setShowHeader] = useState(true)
     const pathname = usePathname()
+    const router = useRouter()
 
     const [showDebts, setShowDebts] = useState(true)
 
@@ -82,7 +83,12 @@ export default function NavigationModal() {
                     {(onClose) => (
                         <>
                             <ModalHeader>
-                                <img src="/images/icon.png" alt="App icon" className="w-10 h-10 -ml-1"/>
+                                <button onClick={() => {
+                                    router.push('/home')
+                                    onClose()
+                                }}>
+                                    <img src="/images/icon.png" alt="App icon" className="w-10 h-10 mt-2 mb-2"/>
+                                </button>
 
                             </ModalHeader>
 
