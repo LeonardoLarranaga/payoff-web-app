@@ -47,7 +47,7 @@ export default function AddDebt({mobile, debt, setDebt}) {
             setIcon(debt.icon)
             setColor(debt.color)
             titleRef.current.value = debt.title
-            setSwitchSelected(debt.color != null)
+            setSwitchSelected(debt.color != null && debt.color.trim())
         }
     }, [isOpen])
 
