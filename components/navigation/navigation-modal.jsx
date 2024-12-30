@@ -111,7 +111,7 @@ export default function NavigationModal() {
                                         </div>
 
                                         <motion.div
-                                            className="flex flex-col justify-start space-y-2 mt-2 max-h-[80%] overflow-y-scroll"
+                                            className="flex flex-col justify-start space-y-2 mt-4 max-h-[80%] overflow-y-scroll"
                                             initial={{opacity: 0, height: 0}}
                                             animate={{opacity: showDebts ? 1 : 0, height: showDebts ? "18rem" : 0}}
                                             exit={{opacity: 0, height: 0}}

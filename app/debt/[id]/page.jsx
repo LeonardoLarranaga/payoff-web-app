@@ -3,7 +3,7 @@
 import {use, useEffect, useState} from "react"
 import pocketbase from "@/libraries/pocketbase"
 import {Icon} from "@iconify/react"
-import AddDebt from "@/components/debts/add-debt/add-debt";
+import AddDebt from "@/components/debts/add-debt/add-debt"
 
 export default function GetDebt({params}) {
 
@@ -31,7 +31,7 @@ export default function GetDebt({params}) {
 
     return (
         <div className="max-h-svh min-h-svh w-full overflow-y-auto">
-            <div className="sm:pl-4 sm:pt-4">
+            <div className="sm:pl-4 pt-4">
                 <div className="flex flex-row items-center justify-between w-full">
                     <div className="flex">
                         <Icon
@@ -39,6 +39,7 @@ export default function GetDebt({params}) {
                             color={debt.color}
                             width={40}
                             height={40}
+                            className="ml-4 sm:ml-0"
                         />
 
                         <h1 className="font-bold text-2xl ml-2">{debt.title}</h1>
