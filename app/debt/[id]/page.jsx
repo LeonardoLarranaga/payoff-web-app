@@ -4,12 +4,15 @@ import {use, useEffect, useState} from "react"
 import pocketbase from "@/libraries/pocketbase"
 import {Icon} from "@iconify/react"
 import AddDebt from "@/components/debts/add-debt/add-debt"
+import {motion} from "framer-motion"
+import {Spinner} from "@nextui-org/react"
 
 export default function GetDebt({params}) {
 
     const { id } = use(params)
     const [debt, setDebt] = useState({})
     const [error, setError] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const fetchDebt = async () => {
@@ -24,11 +27,19 @@ export default function GetDebt({params}) {
                     return
                 }
                 console.log("Error fetching debt:", error)
+            } finally {
+                setIsLoading(false)
             }
         }
 
         fetchDebt().catch()
     }, [id])
+
+    const loadingScreen = (
+        <div className="max-h-svh min-h-svh w-full flex items-center justify-center">
+            <Spinner color="primary" />
+        </div>
+    )
 
     const notFoundScreen = (
         <div className="max-h-svh min-h-svh w-full flex items-center justify-center">
@@ -42,29 +53,55 @@ export default function GetDebt({params}) {
         </div>
     )
 
+    if (isLoading) return loadingScreen
     if (error === "404") return notFoundScreen
 
     return (
-        <div className="max-h-svh min-h-svh w-full overflow-y-auto">
-            <div className="sm:pl-4 pt-4">
-                <div className="flex flex-row items-center justify-between w-full">
-                    <div className="flex">
-                        <Icon
-                            icon={debt.icon}
-                            color={debt.color}
-                            width={40}
-                            height={40}
-                            className="ml-4 sm:ml-0"
-                        />
+        <motion.div
+            initial="hidden"
+            animate="visible"
+            transition={{duration: 0.6, ease: "easeOut"}}
+            variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+            }}
+            className="max-h-svh min-h-svh w-full overflow-y-auto"
+        >
+            <div className="px-4 pt-4">
+                <div className="flex flex-col p-4 w-full bg-[var(--sidebar-background)] rounded-lg" style={{
+                    background: isLoading
+                        ? 'transparent'
+                        : `linear-gradient(to bottom, var(--sidebar-background), ${debt.color}4D)`,
+                }}>
+                    <div className="flex flex-row items-center justify-between">
+                        <div className="flex">
+                            <Icon
+                                icon={debt.icon}
+                                color={debt.color}
+                                width={40}
+                                height={40}
+                            />
 
-                        <h1 className="font-bold text-2xl ml-2">{debt.title}</h1>
+                            <h1 className="font-bold text-2xl ml-2">{debt.title}</h1>
+                        </div>
+
+                        <AddDebt debt={debt} setDebt={setDebt}/>
                     </div>
 
-                    <AddDebt debt={debt} setDebt={setDebt}/>
+                    <p className="text-6xl font-bold">
+                        ${(debt.totalAmount || 0).toFixed(2)}
+                    </p>
                 </div>
 
+                <div className="flex flex-row items-center justify-between mt-4">
+                    <h1 className="text-xl">Transactions</h1>
+                    <button className="flex items-center gap-2 text-gray-500">
+                        <Icon icon="akar-icons:plus" width={20} height={20}/>
+                        <span>Add transaction</span>
+                    </button>
+                </div>
                 <h1>{JSON.stringify(debt)}</h1>
             </div>
-        </div>
+        </motion.div>
     )
 }

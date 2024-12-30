@@ -22,6 +22,7 @@ export default function Home() {
                 setDebtHistory(user.debtHistory)
                 setHasFetch(true)
             } catch (error) {
+                if (error.toString().includes("autocancel")) return
                 console.error(error)
                 setFailed(true)
             }

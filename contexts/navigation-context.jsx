@@ -49,6 +49,7 @@ export const NavigationProvider = ({children}) => {
                         sort: "created"
                     })
 
+                    setDebtItems([])
                     setDebtItems(records.map((record) => ({
                         id: record.id,
                         title: record.title,
@@ -67,7 +68,7 @@ export const NavigationProvider = ({children}) => {
             pocketbase.collection("debts").subscribe("*", function (e) {
                 switch (e.action) {
                     case "create":
-                        setDebtItems([...debtItems, {
+                        setDebtItems((previous) => [...previous, {
                             id: e.record.id,
                             title: e.record.title,
                             icon: e.record.icon,
@@ -77,7 +78,7 @@ export const NavigationProvider = ({children}) => {
                         break
 
                     case "update":
-                        setDebtItems(debtItems.map((item) => item.id === e.record.id ? {
+                        setDebtItems((previous) => previous.map((item) => item.id === e.record.id ? {
                             id: e.record.id,
                             title: e.record.title,
                             icon: e.record.icon,
@@ -87,7 +88,7 @@ export const NavigationProvider = ({children}) => {
                         break
 
                     case "delete":
-                        setDebtItems(debtItems.filter((item) => item.id !== e.record.id))
+                        setDebtItems((previous) => previous.filter((item) => item.id !== e.record.id))
                         break
                 }
             }).catch()
