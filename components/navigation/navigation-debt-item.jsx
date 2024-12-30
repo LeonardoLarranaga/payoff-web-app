@@ -39,6 +39,7 @@ export default function NavigationDebtItem({index, item, onClose}) {
                     width={iconSize}
                     height={iconSize}
                     color={item.color}
+                    className="ml-1"
                 />
                 <h1 className={textSize}>{item.title}</h1>
 

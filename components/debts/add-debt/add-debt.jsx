@@ -1,6 +1,19 @@
-import {Button, Input, Modal, ModalBody, ModalContent, ModalHeader, Switch, useDisclosure} from "@nextui-org/react"
+import {
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownTrigger,
+    Input,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalHeader,
+    Switch,
+    useDisclosure
+} from "@nextui-org/react"
 import useRefs from "react-use-refs"
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import IconPicker from "@/components/debts/add-debt/icon-picker"
 import {HexColorPicker} from "react-colorful"
 import pocketbase from "@/libraries/pocketbase"
@@ -17,7 +30,7 @@ export const AddIcon = ({width, height}) => {
     </svg>)
 }
 
-export default function AddDebt({mobile}) {
+export default function AddDebt({mobile, debt, setDebt}) {
     const {isOpen, onOpen, onOpenChange} = useDisclosure()
 
     const [titleRef] = useRefs()
@@ -25,8 +38,18 @@ export default function AddDebt({mobile}) {
     const [icon, setIcon] = useState("")
     const [color, setColor] = useState(null)
     const [error, setError] = useState(null)
+    const [switchSelected, setSwitchSelected] = useState(false)
 
     const router = useRouter()
+
+    useEffect(() => {
+        if (isOpen && debt) {
+            setIcon(debt.icon)
+            setColor(debt.color)
+            titleRef.current.value = debt.title
+            setSwitchSelected(debt.color != null)
+        }
+    }, [isOpen])
 
     const onAddDebt = async (onClose) => {
         try {
@@ -74,30 +97,78 @@ export default function AddDebt({mobile}) {
         }
     }
 
-    return (
-        <>
-            { mobile &&
-                <Button
-                    onPress={onOpen}
-                    variant="bordered"
-                    color="primary"
-                    className={`${mobile ? "w-full h-12" : "h-10 "}`}
-                    startContent={<AddIcon width="60" height="60"/>}
-                >
-                    Add Debt
-                </Button>
+    const onDeleteDebt = async (onClose) => {
+        try {
+            setError(null)
+            const response = await pocketbase.collection("debts").delete(debt.id)
+            if (!response.code) {
+                onClose()
+                router.push("/home")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const onUpdateDebt = async (onClose) => {
+        try {
+            setError(null)
+            if (!titleRef.current.value.trim()) {
+                setError(new Error("Please enter a title for the debt"))
+                return
+            }
+            const data = {
+                title: titleRef.current.value,
+                icon: icon,
+                color: color
             }
 
-            { !mobile &&
+            const record = await pocketbase.collection("debts").update(debt.id, data)
+            if (record.message) {
+                setError(record.message)
+                return
+            }
+
+            if (!record.id) return
+
+            setDebt((previous) => ({
+                ...previous,
+                title: record.title,
+                icon: record.icon,
+                color: record.color
+            }))
+            onClose()
+        } catch (error) {
+            setError(error)
+            console.log(error)
+        }
+    }
+
+    return (
+        <>
+            {!debt ? (
+                <Button
+                    onPress={onOpen}
+                    variant={mobile ? "bordered" : "faded"}
+                    color={mobile ? "primary" : "default"}
+                    isIconOnly={!mobile}
+                    className={`${mobile ? "w-full h-12" : ''}`}
+                    startContent={mobile ? <AddIcon width="60" height="60"/> : null}
+                    size={mobile ? "md" : "sm"}
+                >
+                    {mobile ? "Add Debt" : <AddIcon width="20" height="20"/>}
+                </Button>
+            ) : (
                 <Button
                     onPress={onOpen}
                     isIconOnly
                     variant="faded"
                     size="sm"
+                    className="mr-4"
                 >
-                    <AddIcon width="20" height="20"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 24 24"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}><path d="M20 7h-9m3 10H5"></path><circle cx={17} cy={17} r={3}></circle><circle cx={7} cy={7} r={3}></circle></g></svg>
                 </Button>
-            }
+            )}
 
             <Modal
                 isOpen={isOpen}
@@ -115,7 +186,7 @@ export default function AddDebt({mobile}) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">New Debt</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">{debt ? "Edit Debt" : "New Debt"}</ModalHeader>
 
                             <ModalBody>
                                 <div className="w-full flex grid-cols-7 gap-4 items-center h-14">
@@ -131,7 +202,8 @@ export default function AddDebt({mobile}) {
 
                                 <Switch
                                     className="font-bold my-3"
-                                    onValueChange={(isSelected) => setColor(isSelected ? "#2671D9" : null)}
+                                    onValueChange={(isSelected) => {setColor(isSelected ? "#2671D9" : null); setSwitchSelected(isSelected)}}
+                                    isSelected={switchSelected}
                                 >
                                     Custom Color
                                 </Switch>
@@ -145,11 +217,37 @@ export default function AddDebt({mobile}) {
                                 }
 
                                 <Button
-                                    onPress={() => onAddDebt(onClose)}
+                                    onPress={() => debt ? onUpdateDebt(onClose) : onAddDebt(onClose)}
                                     color="primary"
                                 >
-                                    Add Debt
+                                    {debt ? "Save" : "Add Debt"}
                                 </Button>
+
+                                { debt && (
+                                    <Dropdown>
+                                        <DropdownTrigger>
+                                            <Button
+                                                color="danger"
+                                                variant="bordered"
+                                            >
+                                                Delete Debt
+                                            </Button>
+                                        </DropdownTrigger>
+
+                                        <DropdownMenu>
+                                            <DropdownItem key="dont">Cancel</DropdownItem>
+                                            <DropdownItem
+                                                onPress={() => onDeleteDebt(onClose)}
+                                                key="delete"
+                                                color="danger"
+                                                startContent={<svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><path fill="currentColor" d="M10.238 3.974L9.98 5.75h4.037l-.256-1.776c-.048-.167-.17-.224-.243-.224H10.48c-.073 0-.195.057-.243.224m5.296 1.776H19.5a.75.75 0 0 1 0 1.5h-.769l-.873 10.185c-.053.62-.096 1.13-.165 1.542c-.07.429-.177.813-.386 1.169a3.25 3.25 0 0 1-1.401 1.287c-.372.177-.764.25-1.198.284c-.417.033-.928.033-1.55.033h-2.316c-.623 0-1.133 0-1.55-.033c-.434-.034-.826-.107-1.198-.284a3.25 3.25 0 0 1-1.401-1.287c-.21-.356-.315-.74-.386-1.169c-.069-.413-.112-.922-.165-1.542L5.269 7.25H4.5a.75.75 0 0 1 0-1.5h3.966l.293-2.029l.011-.061c.182-.79.86-1.41 1.71-1.41h3.04c.85 0 1.528.62 1.71 1.41l.011.061z"></path></svg>}
+                                            >
+                                                Delete
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
+
+                                )}
 
                                 {error != null && <p className="text-red-500">{error.message}</p>}
                             </ModalBody>
