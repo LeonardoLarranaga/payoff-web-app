@@ -6,6 +6,7 @@ import {Icon} from "@iconify/react"
 import AddDebt from "@/components/debts/add-debt/add-debt"
 import {motion} from "framer-motion"
 import {Spinner} from "@nextui-org/react"
+import AddTransaction from "@/components/debts/transactions/add-transaction"
 
 export default function GetDebt({params}) {
 
@@ -18,7 +19,7 @@ export default function GetDebt({params}) {
         const fetchDebt = async () => {
             try {
                 const record = await pocketbase.collection("debts").getOne(id, {
-                    expand: 'transactions'
+                    expand: 'transactions(debt)'
                 })
                 setDebt(record)
             } catch (error) {
@@ -95,10 +96,7 @@ export default function GetDebt({params}) {
 
                 <div className="flex flex-row items-center justify-between mt-4">
                     <h1 className="text-xl">Transactions</h1>
-                    <button className="flex items-center gap-2 text-gray-500">
-                        <Icon icon="akar-icons:plus" width={20} height={20}/>
-                        <span>Add transaction</span>
-                    </button>
+                    <AddTransaction debt={debt} />
                 </div>
                 <h1>{JSON.stringify(debt)}</h1>
             </div>
