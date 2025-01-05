@@ -96,6 +96,8 @@ export const NavigationProvider = ({children}) => {
             return () => {
                 pocketbase.collection("debts").unsubscribe().catch()
             }
+        } else {
+            setDebtItems([])
         }
     }, [token])
 

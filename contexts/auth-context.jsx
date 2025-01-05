@@ -5,6 +5,7 @@ import {useRouter} from "next/navigation"
 import pocketbase from "@/libraries/pocketbase"
 import {ClientResponseError} from "pocketbase"
 import {useCookies} from "react-cookie"
+import {useLocalStorage} from "@/libraries/use-local-storage"
 
 const AuthContext = createContext(null)
 
@@ -16,14 +17,12 @@ export const AuthProvider = ({children}) => {
     const [otpResponse, setOtpResponse] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
-    const [cookies, setCookie, removeCookie] = useCookies(['email', 'token',])
-
-    const email = cookies.email
-    const token = cookies.token
-    const setEmail = (email) => setCookie('email', email)
-    const setToken = (token) => setCookie('token', token)
+    const [email, setEmail] = useLocalStorage('email', null)
+    const [token, setToken] = useLocalStorage('token', null)
 
     const router = useRouter()
+
+    const [_, setCookie] = useCookies(['isNavigationMenuOpen'])
 
     useEffect(() => {
         try {
@@ -38,8 +37,6 @@ export const AuthProvider = ({children}) => {
 
     function clearCredentials() {
         pocketbase.authStore.clear()
-        removeCookie('email')
-        removeCookie('token')
         setEmail(null)
         setToken(null)
         setOtpResponse(null)
@@ -119,10 +116,11 @@ export const AuthProvider = ({children}) => {
                 return
             }
             setToken(auth.token)
-            setEmail(email.email)
+            setEmail(email)
             pocketbase.authStore.save(auth.token, auth.record)
             setOtpResponse(null)
             router.push("home")
+            setCookie('isNavigationMenuOpen', true)
         } catch (error) {
             console.error(error)
             setIsInvalid(true)
@@ -136,7 +134,6 @@ export const AuthProvider = ({children}) => {
         otpResponse,
         requestSignInWithOTP,
         signInWithOTP,
-        clearCredentials,
         isLoading
     }
 

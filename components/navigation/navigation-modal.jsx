@@ -21,8 +21,6 @@ export default function NavigationModal() {
         setShowHeader(pathname !== '/')
     }, [pathname])
 
-    if (!showHeader || pathname === '/') return null
-
     useEffect(() => {
         const handleResize = () => {
             if (document.documentElement.clientWidth > 700) onClose()
@@ -32,6 +30,8 @@ export default function NavigationModal() {
         handleResize()
         return () => window.removeEventListener('resize', handleResize)
     }, [])
+
+    if (!showHeader || pathname === '/') return <></>
 
     return (
         <header className={`sm:hidden block sticky top-0 z-50 h-[4.5rem] backdrop-blur-2xl items-center w-full`}>
