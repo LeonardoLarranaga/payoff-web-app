@@ -1,16 +1,30 @@
-import {InputOtp, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react"
+import {Button, InputOtp, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react"
 import {useAuth} from "@/contexts/auth-context"
 import {useEffect, useState} from "react"
 
-export default function OtpCodeModal(email) {
-    const { otpResponse, signInWithOTP } = useAuth()
+export default function OtpCodeModal({email}) {
+    const { otpResponse, signInWithOTP, requestSignInWithOTP, isLoading } = useAuth()
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
     const [otp, setOtp] = useState("")
     const [isInvalid, setIsInvalid] = useState(false)
+    const [timeLeft, setTimeLeft] = useState(30)
 
     useEffect(() => {
         if (otpResponse) onOpen()
     }, [otpResponse])
+
+    useEffect(() => {
+        if (isOpen) setTimeLeft(30)
+    }, [isOpen])
+
+    useEffect(() => {
+        if (timeLeft > 0) {
+            const timer = setTimeout(() => {
+                setTimeLeft(timeLeft - 1)
+            }, 1000)
+            return () => clearTimeout(timer)
+        }
+    }, [timeLeft])
 
     return (
         <Modal
@@ -35,6 +49,14 @@ export default function OtpCodeModal(email) {
                                     onComplete={() => signInWithOTP(email, otp, setOtp, setIsInvalid)}
                                 />
                                 {isInvalid && <p className="text-red-500">Invalid OTP Code</p>}
+                                <Button
+                                    color="primary"
+                                    isDisabled={timeLeft > 0}
+                                    isLoading={isLoading}
+                                    onPress={() => requestSignInWithOTP(email)}
+                                >
+                                    Resend OTP Code ({timeLeft}s)
+                                </Button>
                             </div>
                         </ModalBody>
                     </>
