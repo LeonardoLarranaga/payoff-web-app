@@ -7,6 +7,7 @@ import AddDebt from "@/components/debts/add-debt/add-debt"
 import {motion} from "framer-motion"
 import {Spinner} from "@nextui-org/react"
 import AddTransaction from "@/components/debts/transactions/add-transaction"
+import TransactionsTable from "@/components/debts/transactions/transactions-table"
 
 export default function GetDebt({params}) {
 
@@ -94,11 +95,12 @@ export default function GetDebt({params}) {
                     </p>
                 </div>
 
-                <div className="flex flex-row items-center justify-between mt-4">
+                <div className="flex flex-row items-center justify-between my-4">
                     <h1 className="text-xl">Transactions</h1>
                     <AddTransaction debt={debt} />
                 </div>
-                <h1>{JSON.stringify(debt)}</h1>
+
+                <TransactionsTable debt={debt} />
             </div>
         </motion.div>
     )
