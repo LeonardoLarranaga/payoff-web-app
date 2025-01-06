@@ -69,7 +69,7 @@ export default function GetDebt({params}) {
             }}
             className="max-h-svh min-h-svh w-full overflow-y-auto"
         >
-            <div className="px-4 pt-4">
+            <div className="px-4 pt-1">
                 <div className="flex flex-col p-4 w-full bg-[var(--sidebar-background)] rounded-lg" style={{
                     background: isLoading
                         ? 'transparent'
