@@ -90,6 +90,7 @@ export default function AddTransaction({debt}) {
                                         ref={titleRef}
                                         variant="bordered"
                                         className="grid-cols-6"
+                                        maxLength={50}
                                         isRequired
                                     />
                                 </div>
