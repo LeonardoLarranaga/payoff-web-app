@@ -29,6 +29,8 @@ export default function AddTransaction({debt}) {
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
+    const [titleLength, setTitleLength] = useState(0)
+
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState("")
     const onSaveTransaction = async ({onClose}) => {
@@ -88,10 +90,12 @@ export default function AddTransaction({debt}) {
                                     <Input
                                         label="Debt Title"
                                         ref={titleRef}
+                                        onValueChange={(value) => setTitleLength(value.length)}
                                         variant="bordered"
                                         className="grid-cols-6"
                                         maxLength={50}
                                         isRequired
+                                        endContent={<span className="text-gray-500 text-xs">{titleLength}/50</span>}
                                     />
                                 </div>
 
