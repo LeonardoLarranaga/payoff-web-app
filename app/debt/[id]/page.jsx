@@ -37,6 +37,78 @@ export default function GetDebt({params}) {
         fetchDebt().catch()
     }, [id])
 
+    useEffect(() => {
+        const subscribeToTransactions = async () => {
+            try {
+                await pocketbase.collection("transactions").subscribe("*", (e) => {
+                    if (e.record.debt !== id.toString()) return
+
+                    switch (e.action) {
+                        case "create":
+                            setDebt((prevDebt) => {
+                                const updatedTransactions = [
+                                    ...(prevDebt.expand?.['transactions(debt)'] || []),
+                                    e.record
+                                ]
+
+                                return {
+                                    ...prevDebt,
+                                    expand: {
+                                        ...prevDebt.expand,
+                                        ['transactions(debt)']: updatedTransactions
+                                    }
+                                }
+                            })
+                            break
+
+                        case "update":
+                            setDebt((prevDebt) => {
+                                const updatedTransactions = prevDebt.expand?.['transactions(debt)']?.map((transaction) =>
+                                    transaction.id === e.record.id ? e.record : transaction
+                                )
+
+                                return {
+                                    ...prevDebt,
+                                    expand: {
+                                        ...prevDebt.expand,
+                                        ['transactions(debt)']: updatedTransactions
+                                    }
+                                }
+                            })
+                            break
+
+                        case "delete":
+                            setDebt((prevDebt) => {
+                                const updatedTransactions = prevDebt.expand?.['transactions(debt)']?.filter(
+                                    (transaction) => transaction.id !== e.record.id
+                                )
+
+                                return {
+                                    ...prevDebt,
+                                    expand: {
+                                        ...prevDebt.expand,
+                                        ['transactions(debt)']: updatedTransactions
+                                    }
+                                }
+                            })
+                            break
+                    }
+                })
+            } catch (error) {
+                console.error("Failed to subscribe to transactions:", error)
+            }
+        }
+
+        subscribeToTransactions().catch()
+
+        return () => {
+            pocketbase.collection("transactions").unsubscribe("*").catch((error) => {
+                console.error("Failed to unsubscribe from transactions:", error)
+            })
+        }
+    }, [id])
+
+
     const loadingScreen = (
         <div className="max-h-svh min-h-svh w-full flex items-center justify-center">
             <Spinner color="primary" />
