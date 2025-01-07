@@ -7,7 +7,7 @@ import AddDebt from "@/components/debts/add-debt/add-debt"
 import {motion} from "framer-motion"
 import {Spinner} from "@nextui-org/react"
 import AddTransaction from "@/components/debts/transactions/add-transaction"
-import TransactionsTable from "@/components/debts/transactions/transactions-table"
+import TransactionsTable from "@/components/debts/transactions/table/transactions-table"
 
 export default function GetDebt({params}) {
 

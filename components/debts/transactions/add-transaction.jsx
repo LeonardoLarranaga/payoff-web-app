@@ -11,14 +11,14 @@ import {
 } from "@nextui-org/react"
 import {Icon} from "@iconify/react"
 import IconPicker from "@/components/debts/add-debt/icon-picker"
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import useRefs from "react-use-refs"
-import {today} from "@internationalized/date"
+import {parseDate, today} from "@internationalized/date"
 import pocketbase from "@/libraries/pocketbase"
 
 const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
-export default function AddTransaction({debt}) {
+export default function AddTransaction({debt, transaction, activate, setActivate}) {
 
     const [icon, setIcon] = useState("prime:shop")
     const [titleRef] = useRefs()
@@ -31,16 +31,34 @@ export default function AddTransaction({debt}) {
 
     const [titleLength, setTitleLength] = useState(0)
 
+    useEffect(() => {
+        if (activate) onOpen()
+    }, [activate])
+
+    useEffect(() => {
+        if (isOpen && transaction) {
+            setIcon(transaction.icon)
+            titleRef.current.value = transaction.title
+            setTitleLength(transaction.title.length)
+            setAmount(transaction.amount)
+            setTransactionDate(parseDate(transaction.transactionDate.slice(0, 10)))
+            setPaymentDate(parseDate(transaction.paymentDate.slice(0, 10)))
+            setDescription(transaction.description)
+        } else {
+            if (setActivate) setActivate(false)
+        }
+    }, [isOpen])
+
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState("")
     const onSaveTransaction = async ({onClose}) => {
         try {
             setIsLoading(true)
             setError(null)
-            const transaction = {
+            const newTransaction = {
                 user: pocketbase.authStore.model.id,
                 debt: debt.id,
-                title: titleRef.current.value,
+                title: titleRef.current?.value ?? "",
                 amount: amount,
                 transactionDate: transactionDate.toDate(currentTimeZone),
                 paymentDate: paymentDate.toDate(currentTimeZone),
@@ -48,7 +66,9 @@ export default function AddTransaction({debt}) {
                 description: description
             }
 
-            const record = await pocketbase.collection("transactions").create(transaction)
+            let record;
+            if (!transaction) record = await pocketbase.collection("transactions").create(newTransaction)
+            else record = await pocketbase.collection("transactions").update(transaction.id, newTransaction)
 
             if (record.message) {
                 setError(record.data.message)
@@ -65,13 +85,15 @@ export default function AddTransaction({debt}) {
 
     return (
         <>
-            <button
-                className="flex items-center gap-2 text-gray-500"
-                onClick={onOpen}
-            >
-                <Icon icon="akar-icons:plus" width={20} height={20}/>
-                <span>Add transaction</span>
-            </button>
+            {!transaction && (
+                <button
+                    className="flex items-center gap-2 text-gray-500"
+                    onClick={onOpen}
+                >
+                    <Icon icon="akar-icons:plus" width={20} height={20}/>
+                    <span>Add transaction</span>
+                </button>
+            )}
 
             <Modal
                 isOpen={isOpen}
@@ -143,9 +165,9 @@ export default function AddTransaction({debt}) {
                                     color="primary"
                                     onPress={() => onSaveTransaction({onClose})}
                                     isLoading={isLoading}
-                                    isDisabled={isNaN(parseFloat(amount)) || !titleRef.current.value.trim()}
+                                    isDisabled={isNaN(parseFloat(amount)) || !(titleRef.current?.value?.trim() ?? "")}
                                 >
-                                    Save Transaction
+                                    {transaction ? "Edit Transaction" : "Save Transaction"}
                                 </Button>
 
                                 {error != null && <p className="text-red-500">{error.message}</p>}
