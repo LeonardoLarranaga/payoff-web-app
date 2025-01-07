@@ -3,6 +3,7 @@ import {useCallback} from "react"
 import ActionsColumn from "@/components/debts/transactions/table/actions-column"
 import DescriptionColumn from "@/components/debts/transactions/table/description-column"
 import TitleColumn from "@/components/debts/transactions/title-column"
+import EmptyTransactionsTableState from "@/components/debts/transactions/table/empty-state"
 
 const columns = [
     {
@@ -68,7 +69,10 @@ export default function TransactionsTable({debt}) {
                 )}
             </TableHeader>
 
-            <TableBody items={debt?.expand?.['transactions(debt)'] ?? []}>
+            <TableBody
+                items={debt?.expand?.['transactions(debt)'] ?? []}
+                emptyContent={<EmptyTransactionsTableState />}
+            >
                 {(transaction) => (
                     <TableRow key={transaction.id}>
                         {(columnKey) => <TableCell>{renderCell(transaction, columnKey)}</TableCell>}
