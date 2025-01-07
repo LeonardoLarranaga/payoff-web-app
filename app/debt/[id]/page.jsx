@@ -8,7 +8,7 @@ import {motion} from "framer-motion"
 import {Spinner} from "@nextui-org/react"
 import AddTransaction from "@/components/debts/transactions/add-transaction"
 import TransactionsTable from "@/components/debts/transactions/table/transactions-table"
-import AnimatedNumber from "@/components/debts/AnimatedNumber";
+import AnimatedNumber from "@/components/debts/animated-number";
 
 export default function GetDebt({params}) {
 
