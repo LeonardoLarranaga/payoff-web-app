@@ -19,7 +19,6 @@ export const Providers = ({children}) => {
                     <ThemeProvider>
                         <NavigationProvider>
                             <Sidebar/>
-                            {/*<Header/>*/}
                             <NavigationModal />
                             <MainContent children={children}/>
                         </NavigationProvider>

@@ -2,7 +2,7 @@ import {Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@
 import {useCallback} from "react"
 import ActionsColumn from "@/components/debts/transactions/table/actions-column"
 import DescriptionColumn from "@/components/debts/transactions/table/description-column"
-import TitleColumn from "@/components/debts/transactions/title-column";
+import TitleColumn from "@/components/debts/transactions/title-column"
 
 const columns = [
     {

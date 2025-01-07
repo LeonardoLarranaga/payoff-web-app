@@ -19,7 +19,7 @@ export default function GetDebt({params}) {
     useEffect(() => {
         const fetchDebt = async () => {
             try {
-                const record = await pocketbase.collection("debts").getOne(id, {
+                const record = await pocketbase.collection("debts").getOne(id.toString(), {
                     expand: 'transactions(debt)'
                 })
                 setDebt(record)

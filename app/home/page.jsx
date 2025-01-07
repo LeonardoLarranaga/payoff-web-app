@@ -35,6 +35,7 @@ export default function Home() {
         <div className="max-h-svh min-h-svh w-full">
             <div
                 className="flex flex-col gap-4 items-center justify-center sm:grid sm:grid-cols-7 sm:gap-2 w-full sm:w-auto">
+                {failed && <span className="text-danger">Error retreiving debt</span>}
                 {totalDebt && (
                     <motion.div
                         className="relative w-full flex flex-row items-center sm:items-end justify-center sm:col-span-3"

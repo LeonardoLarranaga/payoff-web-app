@@ -14,13 +14,11 @@ export default function MyResponsiveLine({data}) {
                 xScale={{type: 'point'}}
                 yScale={{
                     type: 'linear',
-                    stacked: true, // Hace que las áreas se acumulen si hay más series
                     min: 'auto',
                     max: 'auto',
                 }}
                 curve="monotoneX" // Curva suave
                 axisBottom={{
-                    orient: 'bottom',
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: -45,
@@ -29,7 +27,6 @@ export default function MyResponsiveLine({data}) {
                     legendPosition: 'middle',
                 }}
                 axisLeft={{
-                    orient: 'left',
                     tickSize: 5,
                     tickPadding: 5,
                     legend: 'Debt',

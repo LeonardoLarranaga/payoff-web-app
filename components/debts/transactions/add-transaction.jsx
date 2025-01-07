@@ -66,7 +66,7 @@ export default function AddTransaction({debt, transaction, activate, setActivate
                 description: description
             }
 
-            let record;
+            let record
             if (!transaction) record = await pocketbase.collection("transactions").create(newTransaction)
             else record = await pocketbase.collection("transactions").update(transaction.id, newTransaction)
 
@@ -143,7 +143,11 @@ export default function AddTransaction({debt, transaction, activate, setActivate
                                         label="Transaction Date"
                                         labelPlacement="inside"
                                         value={transactionDate}
-                                        onChange={setTransactionDate}
+                                        onChange={(value) => {
+                                            if (value) {
+                                                setTransactionDate(parseDate(value.toString()))
+                                            }
+                                        }}
                                     />
 
                                     <DatePicker
@@ -151,7 +155,12 @@ export default function AddTransaction({debt, transaction, activate, setActivate
                                         label="Payment Date"
                                         labelPlacement="inside"
                                         value={paymentDate}
-                                        onChange={setPaymentDate}
+                                        onChange={(value) => {
+                                            if (value) {
+                                                setPaymentDate(parseDate(value.toString()))
+                                                console.log(parseDate(value.toString()))
+                                            }
+                                        }}
                                     />
                                 </div>
 

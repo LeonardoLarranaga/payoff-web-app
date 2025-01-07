@@ -36,7 +36,7 @@ export default function AddDebt({mobile, debt, setDebt}) {
     const [titleRef] = useRefs()
 
     const [icon, setIcon] = useState("")
-    const [color, setColor] = useState(null)
+    const [color, setColor] = useState("")
     const [error, setError] = useState(null)
     const [switchSelected, setSwitchSelected] = useState(false)
 
@@ -56,14 +56,14 @@ export default function AddDebt({mobile, debt, setDebt}) {
     const onAddDebt = async (onClose) => {
         try {
             setError(null)
-            if (!titleRef.current.value.trim()) {
+            if (!titleRef.current?.value.trim()) {
                 setError(new Error("Please enter a title for the debt"))
                 return
             }
             const data = {
                 user: pocketbase.authStore.model.id,
                 transactions: [],
-                title: titleRef.current.value,
+                title: titleRef.current?.value ?? "",
                 icon: icon,
                 totalAmount: 0.0,
                 debtHistory: JSON.stringify([
@@ -102,11 +102,9 @@ export default function AddDebt({mobile, debt, setDebt}) {
     const onDeleteDebt = async (onClose) => {
         try {
             setError(null)
-            const response = await pocketbase.collection("debts").delete(debt.id)
-            if (!response.code) {
-                onClose()
-                router.push("/home")
-            }
+            await pocketbase.collection("debts").delete(debt.id)
+            onClose()
+            router.push("/home")
         } catch (error) {
             console.log(error)
         }
@@ -115,12 +113,12 @@ export default function AddDebt({mobile, debt, setDebt}) {
     const onUpdateDebt = async (onClose) => {
         try {
             setError(null)
-            if (!titleRef.current.value.trim()) {
+            if (!titleRef.current?.value.trim()) {
                 setError(new Error("Please enter a title for the debt"))
                 return
             }
             const data = {
-                title: titleRef.current.value,
+                title: titleRef.current?.value ?? "",
                 icon: icon,
                 color: color
             }
@@ -178,7 +176,7 @@ export default function AddDebt({mobile, debt, setDebt}) {
                     if (!isOpen) {
                         setError(null)
                         setIcon("")
-                        setColor(null)
+                        setColor("")
                     }
                 }}
                 placement="center"
@@ -203,13 +201,13 @@ export default function AddDebt({mobile, debt, setDebt}) {
 
                                 <Switch
                                     className="font-bold my-3"
-                                    onValueChange={(isSelected) => {setColor(isSelected ? "#2671D9" : null); setSwitchSelected(isSelected)}}
+                                    onValueChange={(isSelected) => {setColor(isSelected ? "#2671D9" : ""); setSwitchSelected(isSelected)}}
                                     isSelected={switchSelected}
                                 >
                                     Custom Color
                                 </Switch>
 
-                                { color != null &&
+                                { color !== "" &&
                                     <HexColorPicker
                                         className="pb-3"
                                         color={color}
