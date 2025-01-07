@@ -8,6 +8,7 @@ import {motion} from "framer-motion"
 import {Spinner} from "@nextui-org/react"
 import AddTransaction from "@/components/debts/transactions/add-transaction"
 import TransactionsTable from "@/components/debts/transactions/table/transactions-table"
+import AnimatedNumber from "@/components/debts/AnimatedNumber";
 
 export default function GetDebt({params}) {
 
@@ -162,9 +163,7 @@ export default function GetDebt({params}) {
                         <AddDebt debt={debt} setDebt={setDebt}/>
                     </div>
 
-                    <p className="text-6xl font-bold">
-                        ${(debt.totalAmount || 0).toFixed(2)}
-                    </p>
+                    <AnimatedNumber className="text-6xl font-bold" value={debt?.expand?.['transactions(debt)']?.reduce((acc, transaction) => acc + (transaction.amount || 0), 0) || 0} />
                 </div>
 
                 <div className="flex flex-row items-center justify-between my-4">
