@@ -47,6 +47,7 @@ export default function OtpCodeModal({email}) {
                                     onValueChange={setOtp}
                                     isInvalid={isInvalid}
                                     onComplete={() => signInWithOTP(email, otp, setOtp, setIsInvalid)}
+                                    autoFocus
                                 />
                                 {isInvalid && <p className="text-red-500">Invalid OTP Code</p>}
                                 <Button
@@ -54,6 +55,7 @@ export default function OtpCodeModal({email}) {
                                     isDisabled={timeLeft > 0}
                                     isLoading={isLoading}
                                     onPress={() => requestSignInWithOTP(email)}
+                                    className="mb-6"
                                 >
                                     Resend OTP Code ({timeLeft}s)
                                 </Button>
