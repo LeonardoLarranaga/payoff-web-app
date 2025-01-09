@@ -134,6 +134,7 @@ export const AuthProvider = ({children}) => {
         otpResponse,
         requestSignInWithOTP,
         signInWithOTP,
+        clearCredentials,
         isLoading
     }
 
