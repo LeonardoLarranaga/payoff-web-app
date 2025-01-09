@@ -75,7 +75,7 @@ export default function TransactionsTable({debt}) {
                 return <TitleColumn transaction={transaction} />
 
             case 'amount':
-                return `$${cellValue}`
+                return `$${Math.abs(cellValue)}`
 
             case 'transactionDate':
             case 'paymentDate':

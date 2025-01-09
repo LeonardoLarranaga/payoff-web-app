@@ -26,6 +26,18 @@ export default function ActionsColumn({debt, transaction}) {
         }
     }
 
+    const onPaid = async () => {
+        const data = {
+            amount: transaction.amount * -1
+        }
+
+        try {
+            await pocketbase.collection("transactions").update(transaction.id, data)
+        } catch (error) {
+            alert(`Error marking transaction as paid: ${error}`)
+        }
+    }
+
     return (
         <>
             <Dropdown>
@@ -47,9 +59,14 @@ export default function ActionsColumn({debt, transaction}) {
                         </DropdownItem>
                     )}
 
-                    <DropdownItem onPress={() => setActive(!active)}>
-                        Edit
+                    <DropdownItem
+                        color={transaction.amount > 0 ? "success" : "warning"}
+                        onPress={onPaid}
+                    >
+                        {transaction.amount > 0 ? "Mark as paid" : "Mark as unpaid"}
                     </DropdownItem>
+
+                    <DropdownItem onPress={() => setActive(!active)}>Edit</DropdownItem>
 
                     <DropdownItem color="danger" onPress={onDelete}>Delete</DropdownItem>
                 </></DropdownMenu>

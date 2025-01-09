@@ -7,7 +7,7 @@ export default function TitleColumn({transaction}) {
                 icon={transaction.icon}
                 width="36"
                 height="36"
-                className="border rounded-lg p-1 min-w-[36px]"
+                className={`border ${transaction.amount < 0 ? "border-green-400" : ""} rounded-lg p-1 min-w-[36px]`}
             />
             <span className="ml-2">{transaction.title}</span>
         </div>
