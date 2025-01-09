@@ -1,17 +1,8 @@
 'use client'
 
-import {
-    Avatar,
-    AvatarIcon,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownSection,
-    DropdownTrigger,
-    Link
-} from "@nextui-org/react"
+import {Avatar, AvatarIcon, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link} from "@nextui-org/react"
 import {useAuth} from "@/contexts/auth-context"
-import {emailIcon, lightIcon, logoutIcon, systemIcon} from "@/libraries/icons"
+import {emailIcon, logoutIcon} from "@/libraries/icons"
 
 export default function UserMenu() {
     const { email, clearCredentials } = useAuth()
@@ -37,22 +28,6 @@ export default function UserMenu() {
             </DropdownTrigger>
 
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownSection showDivider title="Theme">
-                    <DropdownItem
-                        startContent={systemIcon}
-                    >
-                        System
-                    </DropdownItem>
-
-                    <DropdownItem
-                        startContent={lightIcon}
-                    >
-                        Light
-                    </DropdownItem>
-
-                    <DropdownItem>Dark</DropdownItem>
-                </DropdownSection>
-
                 <DropdownItem
                     startContent={emailIcon}
                     color="primary"
