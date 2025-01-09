@@ -33,7 +33,7 @@ export const AuthProvider = ({children}) => {
         }
     }, [router])
 
-    function clearCredentials() {
+    const clearCredentials = () => {
         pocketbase.authStore.clear()
         setEmail(null)
         setToken(null)
