@@ -163,7 +163,7 @@ export default function GetDebt({params}) {
                         <AddDebt debt={debt} setDebt={setDebt}/>
                     </div>
 
-                    <AnimatedNumber className="text-6xl font-bold" value={debt?.expand?.['transactions(debt)']?.reduce((acc, transaction) => acc + (transaction.amount || 0), 0) || 0} />
+                    <AnimatedNumber className="text-6xl font-bold" value={debt?.expand?.['transactions(debt)']?.reduce((acc, transaction) => acc + ((transaction.amount ?? 0) < 0 ? 0 : transaction.amount), 0) ?? 0} />
                 </div>
 
                 <div className="flex flex-row items-center justify-between my-4">
