@@ -1,7 +1,6 @@
 'use client'
 
 import {createContext, useContext, useEffect} from "react"
-import {useCookies} from "react-cookie"
 import {useAuth} from "@/contexts/auth-context"
 import pocketbase from "@/libraries/pocketbase"
 import {useLocalStorage} from "@/libraries/use-local-storage"
@@ -14,25 +13,19 @@ export const useNavigation = () => {
 
 export const NavigationProvider = ({children}) => {
 
-    const [cookies, setCookie] = useCookies(['isNavigationMenuOpen'])
+    const [isNavigationMenuOpen, setIsNavigationMenuOpen] = useLocalStorage('isNavigationMenuOpen', true)
 
     const toggleNavigationMenu = () => {
-        setCookie('isNavigationMenuOpen', cookies.isNavigationMenuOpen !== true)
-    }
-
-    const setIsNavigationMenuOpen = (isOpen) => {
-        setCookie('isNavigationMenuOpen', isOpen)
+        setIsNavigationMenuOpen(!isNavigationMenuOpen)
     }
 
     const { token } = useAuth()
-
-    const isNavigationMenuOpen = cookies.isNavigationMenuOpen === true
 
     const [debtItems, setDebtItems] = useLocalStorage('menuItems', [])
 
     useEffect(() => {
         const handleResize = () => {
-            setCookie('isNavigationMenuOpen', document.documentElement.clientWidth > 700)
+            setIsNavigationMenuOpen(document.documentElement.clientWidth > 700)
         }
 
         window.addEventListener('resize', handleResize)

@@ -4,7 +4,6 @@ import {createContext, useContext, useEffect, useState} from "react"
 import {useRouter} from "next/navigation"
 import pocketbase from "@/libraries/pocketbase"
 import {ClientResponseError} from "pocketbase"
-import {useCookies} from "react-cookie"
 import {useLocalStorage} from "@/libraries/use-local-storage"
 
 const AuthContext = createContext(null)
@@ -22,8 +21,6 @@ export const AuthProvider = ({children}) => {
 
     const router = useRouter()
 
-    const [_, setCookie] = useCookies(['isNavigationMenuOpen'])
-
     useEffect(() => {
         try {
             if (pocketbase.authStore.token && pocketbase.authStore.isValid) {
@@ -40,6 +37,7 @@ export const AuthProvider = ({children}) => {
         setEmail(null)
         setToken(null)
         setOtpResponse(null)
+        localStorage.removeItem('isNavigationMenuOpen')
         router.push('/')
     }
 
@@ -120,7 +118,6 @@ export const AuthProvider = ({children}) => {
             pocketbase.authStore.save(auth.token, auth.record)
             setOtpResponse(null)
             router.push("home")
-            setCookie('isNavigationMenuOpen', true)
         } catch (error) {
             console.error(error)
             setIsInvalid(true)
