@@ -9,19 +9,23 @@ import TransactionsTableSearchBar from "@/components/debts/transactions/table/se
 const columns = [
     {
         key: 'title',
-        title: 'Title'
+        title: 'Title',
+        sortable: true
     },
     {
         key: 'amount',
-        title: 'Amount'
+        title: 'Amount',
+        sortable: true
     },
     {
         key: 'transactionDate',
-        title: 'Transaction Date'
+        title: 'Transaction Date',
+        sortable: true
     },
     {
         key: 'paymentDate',
-        title: 'Payment Date'
+        title: 'Payment Date',
+        sortable: true
     },
     {
         key: 'description',
@@ -36,6 +40,10 @@ const columns = [
 export default function TransactionsTable({debt}) {
 
     const [filterValue, setFilterValue] = useState("")
+    const [sortDescriptor, setSortDescriptor] = useState({
+        column: 'transactionDate',
+        direction: 'descending'
+    })
 
     const filteredTransactions = useMemo(() => {
         let transactions = [...debt?.expand?.['transactions(debt)'] ?? []]
@@ -48,6 +56,16 @@ export default function TransactionsTable({debt}) {
 
         return transactions
     }, [debt?.expand?.['transactions(debt)'] ?? [], filterValue])
+
+    const sortedTransactions = useMemo(() => {
+        return [...filteredTransactions].sort((a, b) => {
+            const first = a[sortDescriptor.column]
+            const second = b[sortDescriptor.column]
+            const cmp = first < second ? -1 : first > second ? 1 : 0
+
+            return sortDescriptor.direction === 'ascending' ? cmp : -cmp
+        })
+    }, [debt?.expand?.['transactions(debt)'] ?? [], filteredTransactions, sortDescriptor])
 
     const renderCell = useCallback((transaction, columnKey) => {
         const cellValue = transaction[columnKey]
@@ -78,17 +96,23 @@ export default function TransactionsTable({debt}) {
         <Table
             aria-label={`Transactions table of ${debt.title}`}
             topContent={<TransactionsTableSearchBar setFilterValue={setFilterValue} />}
+            sortDescriptor={sortDescriptor}
+            onSortChange={setSortDescriptor}
         >
             <TableHeader columns={columns}>
                 {(column) => (
-                    <TableColumn key={column.key} align={column.key === 'actions' ? 'center' : 'start'}>
+                    <TableColumn
+                        key={column.key}
+                        align={column.key === 'actions' ? 'center' : 'start'}
+                        allowsSorting={column.sortable}
+                    >
                         {column.title}
                     </TableColumn>
                 )}
             </TableHeader>
 
             <TableBody
-                items={filteredTransactions}
+                items={sortedTransactions}
                 emptyContent={<EmptyTransactionsTableState />}
             >
                 {(transaction) => (
