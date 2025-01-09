@@ -59,7 +59,7 @@ export default function AddTransaction({debt, transaction, activate, setActivate
                 user: pocketbase.authStore.model.id,
                 debt: debt.id,
                 title: titleRef.current?.value ?? "",
-                amount: amount,
+                amount: Math.abs(parseFloat(amount)),
                 transactionDate: transactionDate.toDate(currentTimeZone),
                 paymentDate: paymentDate.toDate(currentTimeZone),
                 icon: icon,
