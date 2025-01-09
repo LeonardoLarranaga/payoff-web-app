@@ -5,11 +5,13 @@ export default function MainContent({children}) {
     const { isNavigationMenuOpen } = useNavigation()
     const pathname = usePathname()
 
+    const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 700
+
     return (
         <div
-            className={pathname !== "/" && window.innerWidth >= 700 ? "pt-1 pl-1 ml-56" : ""}
+            className={pathname !== "/" && isDesktop ? "pt-1 pl-1 ml-56" : ""}
             style={{
-                marginLeft: pathname !== "/" && isNavigationMenuOpen && window.innerWidth >= 700 ? '14rem' : '0',
+                marginLeft: pathname !== "/" && isNavigationMenuOpen && isDesktop ? '14rem' : '0',
             }}
         >
             {children}
