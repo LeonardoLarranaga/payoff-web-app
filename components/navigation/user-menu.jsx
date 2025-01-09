@@ -1,7 +1,17 @@
 'use client'
 
-import {Avatar, AvatarIcon, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link} from "@nextui-org/react"
+import {
+    Avatar,
+    AvatarIcon,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownSection,
+    DropdownTrigger,
+    Link
+} from "@nextui-org/react"
 import {useAuth} from "@/contexts/auth-context"
+import {emailIcon, lightIcon, logoutIcon, systemIcon} from "@/libraries/icons"
 
 export default function UserMenu() {
     const { email, clearCredentials } = useAuth()
@@ -24,12 +34,27 @@ export default function UserMenu() {
                         <p className="font-bold">{email}</p>
                     </div>
                 </div>
-
             </DropdownTrigger>
 
             <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownSection showDivider title="Theme">
+                    <DropdownItem
+                        startContent={systemIcon}
+                    >
+                        System
+                    </DropdownItem>
+
+                    <DropdownItem
+                        startContent={lightIcon}
+                    >
+                        Light
+                    </DropdownItem>
+
+                    <DropdownItem>Dark</DropdownItem>
+                </DropdownSection>
+
                 <DropdownItem
-                    startContent={<svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><g fill="none" stroke="#006FEE" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}> <rect width={18.5} height={15.5} x={2.75} y={4.25} rx={3}></rect> <path d="m2.75 8l8.415 3.866a2 2 0 0 0 1.67 0L21.25 8"></path></g></svg>}
+                    startContent={emailIcon}
                     color="primary"
                 >
                     <Link
@@ -43,7 +68,7 @@ export default function UserMenu() {
                 <DropdownItem
                     className="text-danger font-semibold"
                     color="danger"
-                    startContent={<svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><path fill="currentColor" d="M12 3.25a.75.75 0 0 1 0 1.5a7.25 7.25 0 0 0 0 14.5a.75.75 0 0 1 0 1.5a8.75 8.75 0 1 1 0-17.5"></path><path fill="currentColor" d="M16.47 9.53a.75.75 0 0 1 1.06-1.06l3 3a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l1.72-1.72H10a.75.75 0 0 1 0-1.5h8.19z"></path></svg>}
+                    startContent={logoutIcon}
                     onPress={clearCredentials}
                 >
                     Logout

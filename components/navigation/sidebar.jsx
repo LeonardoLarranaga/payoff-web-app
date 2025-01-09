@@ -8,6 +8,7 @@ import {useEffect, useState} from "react"
 import {useAuth} from "@/contexts/auth-context"
 import AddDebt from "@/components/debts/add-debt/add-debt"
 import NavigationDebtItem from "@/components/navigation/navigation-debt-item"
+import {sidebarChevronIcon} from "@/libraries/icons"
 
 export default function Sidebar() {
     const { debtItems, isNavigationMenuOpen, setIsNavigationMenuOpen } = useNavigation()
@@ -52,10 +53,7 @@ export default function Sidebar() {
                                 className={`transform transition-transform duration-300 ease-in-out ${
                                     showDebts ? 'rotate-180' : 'rotate-90'
                                 } translate-y-1`}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
-                                    <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                                          strokeWidth={2} d="m18 15l-6-6l-6 6"></path>
-                                </svg>
+                                {sidebarChevronIcon}
                             </button>
                             <AddDebt/>
                         </div>
