@@ -27,13 +27,11 @@ export default function Sidebar() {
     if (!showSidebar || pathname === '/') return null
 
     return (
-        <motion.div
-            animate={{ left: !isNavigationMenuOpen ? '-100%' : '0.5rem' }}
-            transition={{ type: 'spring', duration: 0.45 }}
+        <div
             className={`${showSidebar ? 'w-56' : 'w-0'} backdrop-blur-2xl rounded-lg border-2 border-[var(--sidebar-border)] bg-[var(--sidebar-background)] fixed z-30 flex flex-col overflow-y-scroll ${pathname === '/' ? 'opacity-0' : ''}`}
             style={{
                 top: '0.5rem',
-                left: '0.5rem',
+                left: isNavigationMenuOpen ? '0.5rem' : '-100%',
                 right: '0.5rem',
                 bottom: '0.5rem'
             }}
@@ -74,6 +72,6 @@ export default function Sidebar() {
 
                 <UserMenu/>
             </div>
-        </motion.div>
+        </div>
     )
 }
