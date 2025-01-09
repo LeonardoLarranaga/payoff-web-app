@@ -18,6 +18,7 @@ export const AuthProvider = ({children}) => {
 
     const [email, setEmail] = useLocalStorage('email', null)
     const [token, setToken] = useLocalStorage('token', null)
+    const [_, setIsNavigationMenuOpen] = useLocalStorage('isNavigationMenuOpen', true)
 
     const router = useRouter()
 
@@ -118,6 +119,7 @@ export const AuthProvider = ({children}) => {
             pocketbase.authStore.save(auth.token, auth.record)
             setOtpResponse(null)
             router.push("home")
+            setIsNavigationMenuOpen(true)
         } catch (error) {
             console.error(error)
             setIsInvalid(true)
