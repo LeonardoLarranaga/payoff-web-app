@@ -1,9 +1,10 @@
 import {Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react"
-import {useCallback} from "react"
+import {useCallback, useMemo, useState} from "react"
 import ActionsColumn from "@/components/debts/transactions/table/actions-column"
 import DescriptionColumn from "@/components/debts/transactions/table/description-column"
 import TitleColumn from "@/components/debts/transactions/title-column"
 import EmptyTransactionsTableState from "@/components/debts/transactions/table/empty-state"
+import TransactionsTableSearchBar from "@/components/debts/transactions/table/search-bar"
 
 const columns = [
     {
@@ -34,6 +35,20 @@ const columns = [
 
 export default function TransactionsTable({debt}) {
 
+    const [filterValue, setFilterValue] = useState("")
+
+    const filteredTransactions = useMemo(() => {
+        let transactions = [...debt?.expand?.['transactions(debt)'] ?? []]
+
+        if (filterValue.trim()) {
+            transactions = transactions.filter((transaction) =>
+                transaction.title.toLowerCase().includes(filterValue.toLowerCase())
+            )
+        }
+
+        return transactions
+    }, [debt?.expand?.['transactions(debt)'] ?? [], filterValue])
+
     const renderCell = useCallback((transaction, columnKey) => {
         const cellValue = transaction[columnKey]
 
@@ -60,7 +75,10 @@ export default function TransactionsTable({debt}) {
     }, [])
 
     return (
-        <Table aria-label={`Transactions table of ${debt.title}`}>
+        <Table
+            aria-label={`Transactions table of ${debt.title}`}
+            topContent={<TransactionsTableSearchBar setFilterValue={setFilterValue} />}
+        >
             <TableHeader columns={columns}>
                 {(column) => (
                     <TableColumn key={column.key} align={column.key === 'actions' ? 'center' : 'start'}>
@@ -70,7 +88,7 @@ export default function TransactionsTable({debt}) {
             </TableHeader>
 
             <TableBody
-                items={debt?.expand?.['transactions(debt)'] ?? []}
+                items={filteredTransactions}
                 emptyContent={<EmptyTransactionsTableState />}
             >
                 {(transaction) => (
