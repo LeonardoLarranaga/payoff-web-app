@@ -71,7 +71,7 @@ export default function GetDebt({params}) {
                 <div className="flex flex-col p-4 w-full bg-[var(--sidebar-background)] rounded-lg" style={{
                     background: isLoading
                         ? 'transparent'
-                        : `linear-gradient(to bottom, var(--sidebar-background), ${debt.color}4D)`,
+                        : `linear-gradient(to bottom, var(--sidebar-background), ${debt.color})`,
                     border: !debt.color ? '1px solid' : 'none'
                 }}>
                     <div className="flex flex-row items-center justify-between">
