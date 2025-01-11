@@ -37,13 +37,13 @@ export default function MyResponsiveLine({data}) {
                 yFormat={value => {
                     return `$${value}`
                 }}
-                colors={{scheme: 'category10'}}
+                colors={[data[0].color]}
                 enableArea={true} // Habilitar el área bajo la línea
                 defs={[
                     // Gradiente para el área
                     linearGradientDef('gradientA', [
-                        {offset: 0, color: 'blue'},
-                        {offset: 100, color: 'blue', opacity: 0},
+                        {offset: 0, color: data[0].color},
+                        {offset: 100, color: data[0].color, opacity: 0},
                     ]),
                 ]}
                 fill={[
