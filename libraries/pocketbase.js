@@ -205,4 +205,15 @@ pocketbase.saveTransaction = async (debt, transaction, titleRef, amount, transac
     }
 }
 
+pocketbase.changeUserColor = async (color, onclose) => {
+    try {
+        const debtHistory = pocketbase.authStore.model.debtHistory
+        debtHistory[0].color = color
+        await pocketbase.collection("users").update(pocketbase.authStore.model.id, {debtHistory})
+        pocketbase.authStore.record.debtHistory[0].color = color
+        onclose()
+    } catch (error) {
+        alert(`Error changing user color: ${error}`)
+    }
+}
 export default pocketbase
