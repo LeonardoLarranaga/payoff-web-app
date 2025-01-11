@@ -18,18 +18,7 @@ import IconPicker from "@/components/debts/add-debt/icon-picker"
 import {HexColorPicker} from "react-colorful"
 import pocketbase from "@/libraries/pocketbase"
 import {useRouter} from "next/navigation"
-import {trashIcon} from "@/libraries/icons"
-
-export const AddIcon = ({width, height}) => {
-    return (<svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 24 24">
-        <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
-            <path
-                d="M3 10V8a2 2 0 0 1 2-2h2m-4 4c1.333 0 4-.8 4-4m-4 4v4m18-4V8a2 2 0 0 0-2-2h-2m4 4c-1.333 0-4-.8-4-4m4 4v2M7 6h10M3 14v2a2 2 0 0 0 2 2h2m-4-4c1.333 0 4 .8 4 4m0 0h4"/>
-            <circle cx="12" cy="12" r="2"/>
-            <path d="M18 15v3m0 3v-3m0 0h-3m3 0h3"/>
-        </g>
-    </svg>)
-}
+import {addIcon, debtEditIcon, trashIcon} from "@/libraries/icons"
 
 export default function AddDebt({mobile, debt, setDebt}) {
     const {isOpen, onOpen, onOpenChange} = useDisclosure()
@@ -154,10 +143,10 @@ export default function AddDebt({mobile, debt, setDebt}) {
                     color={mobile ? "primary" : "default"}
                     isIconOnly={!mobile}
                     className={`${mobile ? "w-full h-12" : ''}`}
-                    startContent={mobile ? <AddIcon width="60" height="60"/> : null}
+                    startContent={mobile ? addIcon({width: 60, height: 60}) : null}
                     size={mobile ? "md" : "sm"}
                 >
-                    {mobile ? "Add Debt" : <AddIcon width="20" height="20"/>}
+                    {mobile ? "Add Debt" : addIcon({width: 24, height: 24})}
                 </Button>
             ) : (
                 <Button
@@ -166,7 +155,7 @@ export default function AddDebt({mobile, debt, setDebt}) {
                     variant="faded"
                     size="sm"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 24 24"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}><path d="M20 7h-9m3 10H5"></path><circle cx={17} cy={17} r={3}></circle><circle cx={7} cy={7} r={3}></circle></g></svg>
+                    {debtEditIcon}
                 </Button>
             )}
 
@@ -184,7 +173,7 @@ export default function AddDebt({mobile, debt, setDebt}) {
                 className={`${mobile ? "mx-4" : ""}`}
             >
                 <ModalContent>
-                    {(onClose) => (
+                {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">{debt ? "Edit Debt" : "New Debt"}</ModalHeader>
 

@@ -105,7 +105,28 @@ export const sidebarIcon = <svg xmlns="http://www.w3.org/2000/svg" width={24} he
     </g>
 </svg>
 
-export const magnifyingGlassSidebarIcon = <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 20 20">
+export const magnifyingGlassSidebarIcon = <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60}
+                                               viewBox="0 0 20 20">
     <path fill="currentColor"
           d="M3 5.5A2.5 2.5 0 0 1 5.5 3h9A2.5 2.5 0 0 1 17 5.5v9a2.5 2.5 0 0 1-2.5 2.5h-2.585a1.5 1.5 0 0 0-.354-.56l-2-2A4.5 4.5 0 0 0 3 8.758zm10 1v7a.5.5 0 0 0 1 0v-7a.5.5 0 0 0-1 0m-4 6c0 .786-.26 1.512-.697 2.096l2.55 2.55a.5.5 0 0 1-.707.707l-2.55-2.55A3.5 3.5 0 1 1 9 12.5m-1 0a2.5 2.5 0 1 0-5 0a2.5 2.5 0 0 0 5 0"></path>
 </svg>
+
+export const debtEditIcon = <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
+       strokeWidth={2}>
+        <path d="M20 7h-9m3 10H5"></path>
+        <circle cx={17} cy={17} r={3}></circle>
+        <circle cx={7} cy={7} r={3}></circle>
+    </g>
+</svg>
+
+export const addIcon = ({width, height}) => {
+    return <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+            <path
+                d="M3 10V8a2 2 0 0 1 2-2h2m-4 4c1.333 0 4-.8 4-4m-4 4v4m18-4V8a2 2 0 0 0-2-2h-2m4 4c-1.333 0-4-.8-4-4m4 4v2M7 6h10M3 14v2a2 2 0 0 0 2 2h2m-4-4c1.333 0 4 .8 4 4m0 0h4"/>
+            <circle cx="12" cy="12" r="2"/>
+            <path d="M18 15v3m0 3v-3m0 0h-3m3 0h3"/>
+        </g>
+    </svg>
+}
