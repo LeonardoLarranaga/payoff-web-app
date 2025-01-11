@@ -90,7 +90,7 @@ pocketbase.addDebt = async (titleRef, icon, color, setError, onClose, router) =>
         }
 
         const data = {
-            user: pocketbase.authStore.model.id,
+            user: pocketbase.authStore.record.id,
             transactions: [],
             title: titleRef.current?.value ?? "",
             icon: icon,
@@ -178,7 +178,7 @@ pocketbase.saveTransaction = async (debt, transaction, titleRef, amount, transac
         setError(null)
 
         const newTransaction = {
-            user: pocketbase.authStore.model.id,
+            user: pocketbase.authStore.record.id,
             debt: debt.id,
             title: titleRef.current.value,
             amount: Math.abs(parseFloat(amount)),
@@ -207,13 +207,14 @@ pocketbase.saveTransaction = async (debt, transaction, titleRef, amount, transac
 
 pocketbase.changeUserColor = async (color, onclose) => {
     try {
-        const debtHistory = pocketbase.authStore.model.debtHistory
+        const debtHistory = pocketbase.authStore.record.debtHistory
         debtHistory[0].color = color
-        await pocketbase.collection("users").update(pocketbase.authStore.model.id, {debtHistory})
+        await pocketbase.collection("users").update(pocketbase.authStore.record.id, {debtHistory})
         pocketbase.authStore.record.debtHistory[0].color = color
         onclose()
     } catch (error) {
         alert(`Error changing user color: ${error}`)
     }
 }
+
 export default pocketbase
