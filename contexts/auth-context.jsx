@@ -68,7 +68,7 @@ export const AuthProvider = ({children}) => {
                 debtHistory: JSON.stringify([
                     {
                         id: 1,
-                        color: "hsl(215, 70%, 50%)",
+                        color: "#2671D9",
                         data: [
                             {
                                 x: Intl.DateTimeFormat('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date()),
