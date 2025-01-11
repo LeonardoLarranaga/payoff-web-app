@@ -106,6 +106,7 @@ export const AuthProvider = ({children}) => {
 
     const signInWithOTP = async (email, otp, setOtp, setIsInvalid) => {
         try {
+            setIsLoading(true)
             const auth = await pocketbase.collection("users").authWithOTP(otpResponse, otp)
             setOtp("")
             if (!auth.token) {
@@ -124,6 +125,8 @@ export const AuthProvider = ({children}) => {
             console.error(error)
             setIsInvalid(true)
             setOtp("")
+        } finally {
+            setIsLoading(false)
         }
     }
 

@@ -1,8 +1,9 @@
-import {Button, InputOtp, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react"
+import {Button, InputOtp, Modal, ModalBody, ModalContent, ModalHeader, Spinner, useDisclosure} from "@nextui-org/react"
 import {useAuth} from "@/contexts/auth-context"
 import {useEffect, useState} from "react"
 
 export default function OtpCodeModal({email}) {
+
     const { otpResponse, signInWithOTP, requestSignInWithOTP, isLoading } = useAuth()
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
     const [otp, setOtp] = useState("")
@@ -49,7 +50,11 @@ export default function OtpCodeModal({email}) {
                                     onComplete={() => signInWithOTP(email, otp, setOtp, setIsInvalid)}
                                     autoFocus
                                 />
+
                                 {isInvalid && <p className="text-red-500">Invalid OTP Code</p>}
+
+                                {isLoading && <Spinner />}
+
                                 <Button
                                     color="primary"
                                     isDisabled={timeLeft > 0}
