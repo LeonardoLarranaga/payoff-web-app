@@ -48,94 +48,11 @@ export default function AddDebt({mobile, debt, setDebt}) {
         setSwitchSelected(isSelected)
     }
 
-    const onAddDebt = async (onClose) => {
-        try {
-            setError(null)
-            if (!titleRef.current?.value.trim()) {
-                setError(new Error("Please enter a title for the debt"))
-                return
-            }
-            const data = {
-                user: pocketbase.authStore.model.id,
-                transactions: [],
-                title: titleRef.current?.value ?? "",
-                icon: icon,
-                totalAmount: 0.0,
-                debtHistory: JSON.stringify([
-                    {
-                        id: 1,
-                        color: color,
-                        data: [
-                            {
-                                x: Intl.DateTimeFormat('es-ES', {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric'
-                                }).format(new Date()),
-                                y: 0.0
-                            }
-                        ]
-                    }
-                ]),
-                color: color
-            }
-
-            const record = await pocketbase.collection("debts").create(data)
-            if (record.message) {
-                setError(record.message)
-                return
-            }
-            if (!record.id) return
-            onClose()
-            router.push(`/debt/${record.id}`)
-        } catch (error) {
-            setError(error)
-            console.log(error)
-        }
-    }
-
-    const onDeleteDebt = async (onClose) => {
-        try {
-            setError(null)
-            await pocketbase.collection("debts").delete(debt.id)
-            onClose()
-            router.push("/home")
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const onUpdateDebt = async (onClose) => {
-        try {
-            setError(null)
-            if (!titleRef.current?.value.trim()) {
-                setError(new Error("Please enter a title for the debt"))
-                return
-            }
-            const data = {
-                title: titleRef.current?.value ?? "",
-                icon: icon,
-                color: color
-            }
-
-            const record = await pocketbase.collection("debts").update(debt.id, data)
-            if (record.message) {
-                setError(record.message)
-                return
-            }
-
-            if (!record.id) return
-
-            setDebt((previous) => ({
-                ...previous,
-                title: record.title,
-                icon: record.icon,
-                color: record.color
-            }))
-            onClose()
-        } catch (error) {
-            setError(error)
-            console.log(error)
+    const onDebt = (onClose) => {
+        if (debt) {
+            pocketbase.updateDebt(debt, setDebt, titleRef, icon, color, setError, onClose).catch()
+        } else {
+            pocketbase.addDebt(titleRef, icon, color, setError, onClose, router).catch()
         }
     }
 
@@ -178,9 +95,11 @@ export default function AddDebt({mobile, debt, setDebt}) {
                 className={`${mobile ? "mx-4" : ""}`}
             >
                 <ModalContent>
-                {(onClose) => (
+                    {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">{debt ? "Edit Debt" : "New Debt"}</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">
+                                {debt ? "Edit Debt" : "New Debt"}
+                            </ModalHeader>
 
                             <ModalBody>
                                 <div className="w-full flex grid-cols-7 gap-4 items-center h-14">
@@ -211,7 +130,7 @@ export default function AddDebt({mobile, debt, setDebt}) {
                                 }
 
                                 <Button
-                                    onPress={() => debt ? onUpdateDebt(onClose) : onAddDebt(onClose)}
+                                    onPress={() => onDebt(onClose)}
                                     color="primary"
                                 >
                                     {debt ? "Save" : "Add Debt"}
@@ -230,8 +149,9 @@ export default function AddDebt({mobile, debt, setDebt}) {
 
                                         <DropdownMenu>
                                             <DropdownItem key="dont">Cancel</DropdownItem>
+
                                             <DropdownItem
-                                                onPress={() => onDeleteDebt(onClose)}
+                                                onPress={() => pocketbase.deleteDebt(debt, setError, onClose, router)}
                                                 key="delete"
                                                 color="danger"
                                                 startContent={trashIcon}

@@ -82,4 +82,95 @@ pocketbase.unsubscribeFromTransactions = async () => {
     })
 }
 
+pocketbase.addDebt = async (titleRef, icon, color, setError, onClose, router) => {
+    try {
+        if (!titleRef.current?.value.trim()) {
+            setError(new Error("Please enter a title for the debt"))
+            return
+        }
+
+        const data = {
+            user: pocketbase.authStore.model.id,
+            transactions: [],
+            title: titleRef.current?.value ?? "",
+            icon: icon,
+            totalAmount: 0.0,
+            debtHistory: JSON.stringify([
+                {
+                    id: 1,
+                    color: color,
+                    data: [
+                        {
+                            x: Intl.DateTimeFormat('es-ES', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            }).format(new Date()),
+                            y: 0.0
+                        }
+                    ]
+                }
+            ]),
+            color: color
+        }
+
+        const record = await pocketbase.collection("debts").create(data)
+        if (record.message) {
+            setError(record.message)
+            return
+        }
+        if (!record.id) return
+        onClose()
+        router.push(`/debt/${record.id}`)
+    } catch (error) {
+        setError(error)
+    }
+}
+
+pocketbase.deleteDebt = async (debt, setError, onClose, router) => {
+    try {
+        setError(null)
+        await pocketbase.collection("debts").delete(debt.id)
+        onClose()
+        router.push("/home")
+    } catch (error) {
+        setError(error)
+    }
+}
+
+pocketbase.updateDebt = async (debt, setDebt, titleRef, icon, color, onClose, setError) => {
+    try {
+        setError(null)
+        if (!titleRef.current?.value.trim()) {
+            setError(new Error("Please enter a title for the debt"))
+            return
+        }
+
+        const data = {
+            title: titleRef.current?.value ?? "",
+            icon: icon,
+            color: color
+        }
+
+        const record = await pocketbase.collection("debts").update(debt.id, data)
+        if (record.message) {
+            setError(record.message)
+            return
+        }
+
+        if (!record.id) return
+        setDebt((previous) => ({
+            ...previous,
+            title: record.title,
+            icon: record.icon,
+            color: record.color
+        }))
+
+        onClose()
+    } catch (error) {
+        setError(error)
+    }
+}
+
+
 export default pocketbase
