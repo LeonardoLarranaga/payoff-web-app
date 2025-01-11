@@ -36,16 +36,24 @@ export default function AddTransaction({debt, transaction, activate, setActivate
     }, [activate])
 
     useEffect(() => {
-        if (isOpen && transaction) {
-            setIcon(transaction.icon)
-            titleRef.current.value = transaction.title
-            setTitleLength(transaction.title.length)
-            setAmount(transaction.amount)
-            setTransactionDate(parseDate(transaction.transactionDate.slice(0, 10)))
-            setPaymentDate(parseDate(transaction.paymentDate.slice(0, 10)))
-            setDescription(transaction.description)
+        if (isOpen) {
+            if (transaction) {
+                setIcon(transaction.icon)
+                titleRef.current.value = transaction.title
+                setTitleLength(transaction.title.length)
+                setAmount(transaction.amount)
+                setTransactionDate(parseDate(transaction.transactionDate.slice(0, 10)))
+                setPaymentDate(parseDate(transaction.paymentDate.slice(0, 10)))
+                setDescription(transaction.description)
+            }
         } else {
             if (setActivate) setActivate(false)
+            setDescription("")
+            setAmount("")
+            setIcon("prime:shop")
+            setTitleLength(0)
+            setTransactionDate(today(currentTimeZone))
+            setPaymentDate(today(currentTimeZone))
         }
     }, [isOpen])
 
