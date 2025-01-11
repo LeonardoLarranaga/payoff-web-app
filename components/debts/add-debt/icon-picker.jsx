@@ -13,8 +13,8 @@ export default function IconPicker({ icon, setIcon, color }) {
 
     const fetchIcons = async () => {
         if (abortController) abortController.abort()
-        const controller = new AbortController();
-        setAbortController(controller);
+        const controller = new AbortController()
+        setAbortController(controller)
 
         try {
             const response = await fetch(`https://api.iconify.design/search?query=${encodeURIComponent(query)}`, {signal: controller.signal})
@@ -24,6 +24,11 @@ export default function IconPicker({ icon, setIcon, color }) {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const onSelectIcon = (icon) => {
+        setIcon(icon)
+        setIsOpened(false)
     }
 
     useEffect(() => {
@@ -77,7 +82,7 @@ export default function IconPicker({ icon, setIcon, color }) {
                             <Button
                                 key={index}
                                 variant="bordered"
-                                onPress={() => {setIcon(icon); setIsOpened(false)}}
+                                onPress={() => onSelectIcon(icon)}
                                 className="aspect-square"
                                 isIconOnly
                             >

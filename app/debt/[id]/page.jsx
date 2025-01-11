@@ -10,7 +10,7 @@ import AddTransaction from "@/components/debts/transactions/add-transaction"
 import TransactionsTable from "@/components/debts/transactions/table/transactions-table"
 import AnimatedNumber from "@/components/debts/animated-number"
 import confetti from "canvas-confetti"
-import {moneySlahIcon} from "@/libraries/icons";
+import {moneySlahIcon} from "@/libraries/icons"
 
 export default function GetDebt({params}) {
 

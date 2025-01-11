@@ -43,6 +43,11 @@ export default function AddDebt({mobile, debt, setDebt}) {
         }
     }, [isOpen, debt])
 
+    const onColorSwitchChange = (isSelected) => {
+        setColor(isSelected ? "#2671D9" : "")
+        setSwitchSelected(isSelected)
+    }
+
     const onAddDebt = async (onClose) => {
         try {
             setError(null)
@@ -191,7 +196,7 @@ export default function AddDebt({mobile, debt, setDebt}) {
 
                                 <Switch
                                     className="font-bold my-3"
-                                    onValueChange={(isSelected) => {setColor(isSelected ? "#2671D9" : ""); setSwitchSelected(isSelected)}}
+                                    onValueChange={onColorSwitchChange}
                                     isSelected={switchSelected}
                                 >
                                     Custom Color
