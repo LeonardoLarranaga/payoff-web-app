@@ -9,6 +9,7 @@ import {Spinner} from "@nextui-org/react"
 import AddTransaction from "@/components/debts/transactions/add-transaction"
 import TransactionsTable from "@/components/debts/transactions/table/transactions-table"
 import AnimatedNumber from "@/components/debts/animated-number"
+import confetti from "canvas-confetti"
 
 export default function GetDebt({params}) {
 
@@ -19,10 +20,22 @@ export default function GetDebt({params}) {
 
     useEffect(() => {
         pocketbase.fetchDebt(id, setDebt, setError, setIsLoading).catch()
-        if (debt)
-        pocketbase.subscribeToTransactions(id, setDebt).catch()
+        if (debt) pocketbase.subscribeToTransactions(id, setDebt).catch()
         return () => pocketbase.unsubscribeFromTransactions().catch()
     }, [id])
+
+    useEffect(() => {
+        const transactions = debt?.expand?.['transactions(debt)']
+        if (!transactions || transactions.length < 5) return
+
+        const amount = transactions.reduce((acc, transaction) => acc + (transaction.amount  < 0 ? 0 : transaction.amount), 0)
+
+        if (amount === 0) confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+        })
+    }, [debt.expand?.['transactions(debt)']])
 
     const loadingScreen = (
         <div className="max-h-svh min-h-svh w-full flex items-center justify-center">

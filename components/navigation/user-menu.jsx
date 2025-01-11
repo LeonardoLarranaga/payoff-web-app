@@ -1,5 +1,3 @@
-'use client'
-
 import {Avatar, AvatarIcon, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link} from "@nextui-org/react"
 import {useAuth} from "@/contexts/auth-context"
 import {emailIcon, logoutIcon} from "@/libraries/icons"
@@ -10,7 +8,7 @@ export default function UserMenu() {
     return (
         <Dropdown backdrop="blur">
             <DropdownTrigger>
-                <div className="flex flex-row items-center hover:cursor-pointer    ">
+                <div className="flex flex-row items-center hover:cursor-pointer">
                     <Avatar
                         classNames={{
                             base: "bg-gradient-to-br from-[#3A8BFDFF] to-[#47B3FFFF]",
