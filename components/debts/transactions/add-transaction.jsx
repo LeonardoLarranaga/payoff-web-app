@@ -51,37 +51,6 @@ export default function AddTransaction({debt, transaction, activate, setActivate
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState("")
-    const onSaveTransaction = async ({onClose}) => {
-        try {
-            setIsLoading(true)
-            setError(null)
-            const newTransaction = {
-                user: pocketbase.authStore.model.id,
-                debt: debt.id,
-                title: titleRef.current?.value ?? "",
-                amount: Math.abs(parseFloat(amount)),
-                transactionDate: transactionDate.toDate(currentTimeZone),
-                paymentDate: paymentDate.toDate(currentTimeZone),
-                icon: icon,
-                description: description
-            }
-
-            let record
-            if (!transaction) record = await pocketbase.collection("transactions").create(newTransaction)
-            else record = await pocketbase.collection("transactions").update(transaction.id, newTransaction)
-
-            if (record.message) {
-                setError(record.data.message)
-                return
-            }
-
-            onClose()
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setIsLoading(false)
-        }
-    }
 
     return (
         <>
@@ -172,7 +141,7 @@ export default function AddTransaction({debt, transaction, activate, setActivate
 
                                 <Button
                                     color="primary"
-                                    onPress={() => onSaveTransaction({onClose})}
+                                    onPress={() => pocketbase.saveTransaction(debt, transaction, titleRef, amount, transactionDate, paymentDate, icon, description, currentTimeZone, setIsLoading, setError, onClose)}
                                     isLoading={isLoading}
                                     isDisabled={isNaN(parseFloat(amount)) || !(titleRef.current?.value?.trim() ?? "")}
                                 >

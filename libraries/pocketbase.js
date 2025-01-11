@@ -172,5 +172,37 @@ pocketbase.updateDebt = async (debt, setDebt, titleRef, icon, color, onClose, se
     }
 }
 
+pocketbase.saveTransaction = async (debt, transaction, titleRef, amount, transactionDate, paymentDate, icon, description, currentTimeZone, setIsLoading, setError, onClose) => {
+    try {
+        setIsLoading(true)
+        setError(null)
+
+        const newTransaction = {
+            user: pocketbase.authStore.model.id,
+            debt: debt.id,
+            title: titleRef.current.value,
+            amount: Math.abs(parseFloat(amount)),
+            transactionDate: transactionDate.toDate(currentTimeZone),
+            paymentDate: paymentDate.toDate(currentTimeZone),
+            icon: icon,
+            description: description
+        }
+
+        let record
+        record = !transaction ? await pocketbase.collection("transactions").create(newTransaction)
+            : await pocketbase.collection("transactions").update(transaction.id, newTransaction)
+
+        if (record.message) {
+            setError(record.message)
+            return
+        }
+
+        onClose()
+    } catch (error) {
+        setError(error)
+    } finally {
+        setIsLoading(false)
+    }
+}
 
 export default pocketbase
