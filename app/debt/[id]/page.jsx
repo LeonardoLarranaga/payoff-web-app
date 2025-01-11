@@ -27,7 +27,7 @@ export default function GetDebt({params}) {
 
     useEffect(() => {
         const transactions = debt?.expand?.['transactions(debt)']
-        if (!transactions || transactions.length < 5) return
+        if (!transactions || transactions.length < 3) return
 
         const amount = transactions.reduce((acc, transaction) => acc + (transaction.amount  < 0 ? 0 : transaction.amount), 0)
 
