@@ -2,6 +2,20 @@ import PocketBase from 'pocketbase'
 
 const pocketbase = new PocketBase("https://payoff.pockethost.io/")
 
+pocketbase.changeUserColor = async (color, onclose) => {
+    try {
+        const debtHistory = pocketbase.authStore.record.debtHistory
+        debtHistory[0].color = color
+        await pocketbase.collection("users").update(pocketbase.authStore.record.id, {debtHistory})
+        pocketbase.authStore.record.debtHistory[0].color = color
+        onclose()
+    } catch (error) {
+        alert(`Error changing user color: ${error}`)
+    }
+}
+
+// DEBT FUNCTIONS
+
 pocketbase.fetchDebt = async (id, setDebt, setError, setIsLoading) => {
     try {
         const record = await pocketbase.collection("debts").getOne(id.toString(), {
@@ -17,69 +31,6 @@ pocketbase.fetchDebt = async (id, setDebt, setError, setIsLoading) => {
     } finally {
         setIsLoading(false)
     }
-}
-
-pocketbase.subscribeToTransactions = async (debtId, setDebt) => {
-    try {
-        await pocketbase.collection("transactions").subscribe("*", (e) => {
-            if (e.record.debt !== debtId.toString()) return
-
-            switch (e.action) {
-                case "create":
-                    setDebt((previousDebt) => {
-                        const updatedTransactions = [
-                            ...(previousDebt.expand?.['transactions(debt)'] || []),
-                            e.record
-                        ]
-
-                        return {
-                            ...previousDebt,
-                            expand: {
-                                ...previousDebt.expand,
-                                ['transactions(debt)']: updatedTransactions
-                            }
-                        }
-                    })
-                    break
-
-                case "update":
-                    setDebt((previousDebt) => {
-                        const updatedTransactions = previousDebt.expand?.['transactions(debt)']?.map((transaction) => transaction.id === e.record.id ? e.record : transaction)
-
-                        return {
-                            ...previousDebt,
-                            expand: {
-                                ...previousDebt.expand,
-                                ['transactions(debt)']: updatedTransactions
-                            }
-                        }
-                    })
-                    break
-
-                case "delete":
-                    setDebt((previousDebt) => {
-                        const updatedTransactions = previousDebt.expand?.['transactions(debt)']?.filter((transaction) => transaction.id !== e.record.id)
-
-                        return {
-                            ...previousDebt,
-                            expand: {
-                                ...previousDebt.expand,
-                                ['transactions(debt)']: updatedTransactions
-                            }
-                        }
-                    })
-                    break
-            }
-        })
-    } catch (error) {
-        console.error("Failed to subscribe to transactions:", error)
-    }
-}
-
-pocketbase.unsubscribeFromTransactions = async () => {
-    await pocketbase.collection("transactions").unsubscribe("*").catch((error) => {
-        console.error("Failed to unsubscribe from transactions:", error)
-    })
 }
 
 pocketbase.addDebt = async (titleRef, icon, color, setError, onClose, router) => {
@@ -172,6 +123,8 @@ pocketbase.updateDebt = async (debt, setDebt, titleRef, icon, color, onClose, se
     }
 }
 
+// TRANSACTION FUNCTIONS
+
 pocketbase.saveTransaction = async (debt, transaction, titleRef, amount, transactionDate, paymentDate, icon, description, currentTimeZone, setIsLoading, setError, onClose) => {
     try {
         setIsLoading(true)
@@ -205,16 +158,85 @@ pocketbase.saveTransaction = async (debt, transaction, titleRef, amount, transac
     }
 }
 
-pocketbase.changeUserColor = async (color, onclose) => {
+pocketbase.deleteTransaction = async (transaction) => {
     try {
-        const debtHistory = pocketbase.authStore.record.debtHistory
-        debtHistory[0].color = color
-        await pocketbase.collection("users").update(pocketbase.authStore.record.id, {debtHistory})
-        pocketbase.authStore.record.debtHistory[0].color = color
-        onclose()
+        await pocketbase.collection("transactions").delete(transaction.id)
     } catch (error) {
-        alert(`Error changing user color: ${error}`)
+        alert(`Error deleting transaction: ${error}`)
     }
+}
+
+pocketbase.payTransaction = async (transaction) => {
+    try {
+        await pocketbase.collection("transactions").update(transaction.id, {
+            amount: transaction.amount * -1
+        })
+    } catch (error) {
+        alert(`Error marking transaction as paid: ${error}`)
+    }
+}
+
+pocketbase.subscribeToTransactions = async (debtId, setDebt) => {
+    try {
+        await pocketbase.collection("transactions").subscribe("*", (e) => {
+            if (e.record.debt !== debtId.toString()) return
+
+            switch (e.action) {
+                case "create":
+                    setDebt((previousDebt) => {
+                        const updatedTransactions = [
+                            ...(previousDebt.expand?.['transactions(debt)'] || []),
+                            e.record
+                        ]
+
+                        return {
+                            ...previousDebt,
+                            expand: {
+                                ...previousDebt.expand,
+                                ['transactions(debt)']: updatedTransactions
+                            }
+                        }
+                    })
+                    break
+
+                case "update":
+                    setDebt((previousDebt) => {
+                        const updatedTransactions = previousDebt.expand?.['transactions(debt)']?.map((transaction) => transaction.id === e.record.id ? e.record : transaction)
+
+                        return {
+                            ...previousDebt,
+                            expand: {
+                                ...previousDebt.expand,
+                                ['transactions(debt)']: updatedTransactions
+                            }
+                        }
+                    })
+                    break
+
+                case "delete":
+                    setDebt((previousDebt) => {
+                        const updatedTransactions = previousDebt.expand?.['transactions(debt)']?.filter((transaction) => transaction.id !== e.record.id)
+
+                        return {
+                            ...previousDebt,
+                            expand: {
+                                ...previousDebt.expand,
+                                ['transactions(debt)']: updatedTransactions
+                            }
+                        }
+                    })
+                    break
+            }
+        })
+    } catch (error) {
+        console.error("Failed to subscribe to transactions:", error)
+    }
+}
+
+pocketbase.unsubscribeFromTransactions = async () => {
+    await pocketbase.collection("transactions").unsubscribe("*").catch((error) => {
+        console.error("Failed to unsubscribe from transactions:", error)
+    })
 }
 
 export default pocketbase

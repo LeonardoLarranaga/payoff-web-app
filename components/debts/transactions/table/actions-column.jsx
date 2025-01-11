@@ -19,26 +19,6 @@ export default function ActionsColumn({debt, transaction}) {
     const {isOpen, onOpen, onOpenChange} = useDisclosure()
     const [active, setActive] = useState(false)
 
-    const onDelete = async () => {
-        try {
-            await pocketbase.collection("transactions").delete(transaction.id)
-        } catch (error) {
-            alert(`Error deleting transaction: ${error}`)
-        }
-    }
-
-    const onPaid = async () => {
-        const data = {
-            amount: transaction.amount * -1
-        }
-
-        try {
-            await pocketbase.collection("transactions").update(transaction.id, data)
-        } catch (error) {
-            alert(`Error marking transaction as paid: ${error}`)
-        }
-    }
-
     const isUnpaid = transaction.amount > 0
 
     return (
@@ -67,7 +47,7 @@ export default function ActionsColumn({debt, transaction}) {
 
                     <DropdownItem
                         color={isUnpaid ? "success" : "warning"}
-                        onPress={onPaid}
+                        onPress={() => pocketbase.payTransaction(transaction)}
                         endContent={isUnpaid ? paidIcon : unpaidIcon}
                     >
                         {isUnpaid ? "Mark as paid" : "Mark as unpaid"}
@@ -82,7 +62,7 @@ export default function ActionsColumn({debt, transaction}) {
 
                     <DropdownItem
                         color="danger"
-                        onPress={onDelete}
+                        onPress={() => pocketbase.deleteTransaction(transaction)}
                         endContent={deleteIcon}
                     >
                         Delete
