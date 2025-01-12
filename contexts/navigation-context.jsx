@@ -1,6 +1,6 @@
 'use client'
 
-import {createContext, useContext, useEffect} from "react"
+import {createContext, useContext, useEffect, useState} from "react"
 import pocketbase from "@/libraries/pocketbase"
 import {useLocalStorage} from "@/libraries/use-local-storage"
 
@@ -18,7 +18,7 @@ export const NavigationProvider = ({children}) => {
         setIsNavigationMenuOpen(!isNavigationMenuOpen)
     }
 
-    const [debtItems, setDebtItems] = useLocalStorage('menuItems', [])
+    const [debtItems, setDebtItems] = useState([])
 
     useEffect(() => {
         const handleResize = () => {
