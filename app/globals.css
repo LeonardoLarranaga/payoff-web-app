@@ -44,26 +44,26 @@ body {
     radial-gradient(at 79% 53%, rgb(78, 153, 219) 0px, transparent 50%);
     z-index: -1;
     pointer-events: none;
-    animation: move-gradient-background 5s infinite alternate-reverse;
+    /*animation: move-gradient-background 5s infinite alternate-reverse;*/
 }
 
-@media (max-width: 768px) {
-    .gradient-background {
-        filter: blur(200px);
-    }
-}
+/*@media (max-width: 768px) {*/
+/*    .gradient-background {*/
+/*        filter: blur(200px);*/
+/*    }*/
+/*}*/
 
-@media (min-width: 769px) {
-    .gradient-background {
-        filter: none;
-    }
-}
+/*@media (min-width: 769px) {*/
+/*    .gradient-background {*/
+/*        filter: none;*/
+/*    }*/
+/*}*/
 
-@keyframes move-gradient-background {
-    0% { background-position: 0 0; transform: rotate(0deg); }
-    50% { background-position: 50% 50%; transform: rotate(180deg);}
-    100% { background-position: 100% 100%; transform: rotate(360deg);}
-}
+/*@keyframes move-gradient-background {*/
+/*    0% { background-position: 0 0; transform: rotate(0deg); }*/
+/*    50% { background-position: 50% 50%; transform: rotate(180deg);}*/
+/*    100% { background-position: 100% 100%; transform: rotate(360deg);}*/
+/*}*/
 
 .line-chart-container path {
     stroke-dasharray: 5000;
