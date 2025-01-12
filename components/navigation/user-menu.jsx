@@ -25,9 +25,13 @@ export default function UserMenu() {
 
     const [newColor, setNewColor] = useState("")
     const [color, setColor] = useState("")
+    const [email, setEmail] = useState("")
 
     useEffect(() => {
         if (!pocketbase.authStore.record) return
+
+        setEmail(pocketbase.authStore.record.email)
+
         const color = pocketbase.authStore.record.debtHistory?.[0]?.color ?? "#2671D9"
         setColor(color)
         setNewColor(color)
@@ -50,7 +54,7 @@ export default function UserMenu() {
 
                     <div className="ml-3 flex flex-col text-sm">
                         <p className="font-semibold">Signed in as</p>
-                        <p className="font-bold">{pocketbase.authStore.record.email}</p>
+                        <p className="font-bold">{email}</p>
                     </div>
                 </div>
             </DropdownTrigger>

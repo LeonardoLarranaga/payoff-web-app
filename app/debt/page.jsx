@@ -9,7 +9,6 @@ export default function DefaultNoDebt() {
                     <h1 className="font-bold text-2xl mr-4">Select a debt from the sidebar</h1>
                     {sidebarIcon}
                 </div>
-
             </div>
         </div>
     )
