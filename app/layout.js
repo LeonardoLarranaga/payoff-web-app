@@ -16,6 +16,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en" suppressHydrationWarning>
         <head>
+            {/*<script src="https://unpkg.com/react-scan/dist/auto.global.js" async/>*/}
             <meta name="apple-mobile-web-app-title" content="Payoff"/>
             <title>Payoff</title>
         </head>

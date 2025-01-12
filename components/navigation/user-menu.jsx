@@ -34,7 +34,7 @@ export default function UserMenu() {
 
         const color = pocketbase.authStore.record.debtHistory?.[0]?.color ?? "#2671D9"
         setColor(color)
-        setNewColor(color)
+        if (!newColor.trim()) setNewColor(color)
     }, [pocketbase.authStore.record])
 
     return (<>
