@@ -12,7 +12,6 @@ import {
 import {Icon} from "@iconify/react"
 import IconPicker from "@/components/debts/add-debt/icon-picker"
 import {useEffect, useState} from "react"
-import useRefs from "react-use-refs"
 import {parseDate, today} from "@internationalized/date"
 import pocketbase from "@/libraries/pocketbase"
 
@@ -21,7 +20,7 @@ const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 export default function AddTransaction({debt, transaction, activate, setActivate}) {
 
     const [icon, setIcon] = useState("prime:shop")
-    const [titleRef] = useRefs()
+    const [title, setTitle] = useState("")
     const [amount, setAmount] = useState("")
     const [transactionDate, setTransactionDate] = useState(today(currentTimeZone))
     const [paymentDate, setPaymentDate] = useState(today(currentTimeZone))
@@ -36,10 +35,14 @@ export default function AddTransaction({debt, transaction, activate, setActivate
     }, [activate])
 
     useEffect(() => {
+        setTitleLength(title.length)
+    }, [title])
+
+    useEffect(() => {
         if (isOpen) {
             if (transaction) {
                 setIcon(transaction.icon)
-                titleRef.current.value = transaction.title
+                setTitle(transaction.title)
                 setTitleLength(transaction.title.length)
                 setAmount(transaction.amount)
                 setTransactionDate(parseDate(transaction.transactionDate.slice(0, 10)))
@@ -88,8 +91,8 @@ export default function AddTransaction({debt, transaction, activate, setActivate
 
                                     <Input
                                         label="Debt Title"
-                                        ref={titleRef}
-                                        onValueChange={(value) => setTitleLength(value.length)}
+                                        value={title}
+                                        onValueChange={setTitle}
                                         variant="bordered"
                                         className="grid-cols-6"
                                         maxLength={50}
@@ -149,9 +152,9 @@ export default function AddTransaction({debt, transaction, activate, setActivate
 
                                 <Button
                                     color="primary"
-                                    onPress={() => pocketbase.saveTransaction(debt, transaction, titleRef, amount, transactionDate, paymentDate, icon, description, currentTimeZone, setIsLoading, setError, onClose)}
+                                    onPress={() => pocketbase.saveTransaction(debt, transaction, title, amount, transactionDate, paymentDate, icon, description, currentTimeZone, setIsLoading, setError, onClose)}
                                     isLoading={isLoading}
-                                    isDisabled={isNaN(parseFloat(amount)) || !(titleRef.current?.value?.trim() ?? "")}
+                                    isDisabled={isNaN(parseFloat(amount)) || !title.trim()}
                                 >
                                     {transaction ? "Edit Transaction" : "Save Transaction"}
                                 </Button>

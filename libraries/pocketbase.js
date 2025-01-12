@@ -33,9 +33,9 @@ pocketbase.fetchDebt = async (id, setDebt, setError, setIsLoading) => {
     }
 }
 
-pocketbase.addDebt = async (titleRef, icon, color, setError, onClose, router) => {
+pocketbase.addDebt = async (title, icon, color, setError, onClose, router) => {
     try {
-        if (!titleRef.current?.value.trim()) {
+        if (!title.trim()) {
             setError(new Error("Please enter a title for the debt"))
             return
         }
@@ -43,7 +43,7 @@ pocketbase.addDebt = async (titleRef, icon, color, setError, onClose, router) =>
         const data = {
             user: pocketbase.authStore.record.id,
             transactions: [],
-            title: titleRef.current?.value ?? "",
+            title: title,
             icon: icon,
             totalAmount: 0.0,
             debtHistory: JSON.stringify([
@@ -89,16 +89,16 @@ pocketbase.deleteDebt = async (debt, setError, onClose, router) => {
     }
 }
 
-pocketbase.updateDebt = async (debt, setDebt, titleRef, icon, color, onClose, setError) => {
+pocketbase.updateDebt = async (debt, setDebt, title, icon, color, onClose, setError) => {
     try {
         setError(null)
-        if (!titleRef.current?.value.trim()) {
+        if (!title.trim()) {
             setError(new Error("Please enter a title for the debt"))
             return
         }
 
         const data = {
-            title: titleRef.current?.value ?? "",
+            title: title,
             icon: icon,
             color: color
         }
@@ -125,7 +125,7 @@ pocketbase.updateDebt = async (debt, setDebt, titleRef, icon, color, onClose, se
 
 // TRANSACTION FUNCTIONS
 
-pocketbase.saveTransaction = async (debt, transaction, titleRef, amount, transactionDate, paymentDate, icon, description, currentTimeZone, setIsLoading, setError, onClose) => {
+pocketbase.saveTransaction = async (debt, transaction, title, amount, transactionDate, paymentDate, icon, description, currentTimeZone, setIsLoading, setError, onClose) => {
     try {
         setIsLoading(true)
         setError(null)
@@ -133,7 +133,7 @@ pocketbase.saveTransaction = async (debt, transaction, titleRef, amount, transac
         const newTransaction = {
             user: pocketbase.authStore.record.id,
             debt: debt.id,
-            title: titleRef.current.value,
+            title: title,
             amount: Math.abs(parseFloat(amount)),
             transactionDate: transactionDate.toDate(currentTimeZone),
             paymentDate: paymentDate.toDate(currentTimeZone),

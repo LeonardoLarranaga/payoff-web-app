@@ -12,7 +12,6 @@ import {
     Switch,
     useDisclosure
 } from "@nextui-org/react"
-import useRefs from "react-use-refs"
 import {useEffect, useState} from "react"
 import IconPicker from "@/components/debts/add-debt/icon-picker"
 import {HexColorPicker} from "react-colorful"
@@ -23,8 +22,7 @@ import {addIcon, debtEditIcon, trashIcon} from "@/libraries/icons"
 export default function AddDebt({mobile, debt, setDebt}) {
     const {isOpen, onOpen, onOpenChange} = useDisclosure()
 
-    const [titleRef] = useRefs()
-
+    const [title, setTitle] = useState("")
     const [icon, setIcon] = useState("")
     const [color, setColor] = useState("")
     const [error, setError] = useState(null)
@@ -35,7 +33,7 @@ export default function AddDebt({mobile, debt, setDebt}) {
     useEffect(() => {
         if (isOpen && debt) {
             setIcon(debt.icon)
-            titleRef.current.value = debt.title
+            setTitle(debt.title)
             if (debt.color != null && debt.color.trim()) {
                 setSwitchSelected(true)
                 setColor(debt.color)
@@ -50,9 +48,9 @@ export default function AddDebt({mobile, debt, setDebt}) {
 
     const onDebt = (onClose) => {
         if (debt) {
-            pocketbase.updateDebt(debt, setDebt, titleRef, icon, color, setError, onClose).catch()
+            pocketbase.updateDebt(debt, setDebt, title, icon, color, setError, onClose).catch()
         } else {
-            pocketbase.addDebt(titleRef, icon, color, setError, onClose, router).catch()
+            pocketbase.addDebt(title, icon, color, setError, onClose, router).catch()
         }
     }
 
@@ -107,7 +105,8 @@ export default function AddDebt({mobile, debt, setDebt}) {
 
                                     <Input
                                         label="Debt Title"
-                                        ref={titleRef}
+                                        value={title}
+                                        onValueChange={setTitle}
                                         variant="bordered"
                                         className="grid-cols-6"
                                     />
