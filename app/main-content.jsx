@@ -9,9 +9,10 @@ export default function MainContent({children}) {
 
     return (
         <div
-            className={pathname !== "/" && isDesktop ? "pt-1 pl-1 ml-56" : ""}
             style={{
-                marginLeft: pathname !== "/" && isNavigationMenuOpen && isDesktop ? '14rem' : '0',
+                paddingTop: "0.25rem",
+                paddingLeft: "0.25rem",
+                marginLeft: pathname !== "/" && (isNavigationMenuOpen || isDesktop) ? '14rem' : '0',
             }}
         >
             {children}
