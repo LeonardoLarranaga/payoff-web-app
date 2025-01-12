@@ -20,7 +20,7 @@ import {useEffect, useState} from "react"
 import pocketbase from "@/libraries/pocketbase"
 
 export default function UserMenu() {
-    const { email, clearCredentials } = useAuth()
+    const { clearCredentials } = useAuth()
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     const [newColor, setNewColor] = useState("")
@@ -50,7 +50,7 @@ export default function UserMenu() {
 
                     <div className="ml-3 flex flex-col text-sm">
                         <p className="font-semibold">Signed in as</p>
-                        <p className="font-bold">{email}</p>
+                        <p className="font-bold">{pocketbase.authStore.record.email}</p>
                     </div>
                 </div>
             </DropdownTrigger>

@@ -4,7 +4,6 @@ import {createContext, useContext, useEffect, useState} from "react"
 import {useRouter} from "next/navigation"
 import pocketbase from "@/libraries/pocketbase"
 import {ClientResponseError} from "pocketbase"
-import {useLocalStorage} from "@/libraries/use-local-storage"
 
 const AuthContext = createContext(null)
 
@@ -15,8 +14,6 @@ export const useAuth = () => {
 export const AuthProvider = ({children}) => {
     const [otpResponse, setOtpResponse] = useState("")
     const [isLoading, setIsLoading] = useState(false)
-
-    const [email, setEmail] = useLocalStorage('email', null)
 
     const router = useRouter()
 
@@ -38,7 +35,6 @@ export const AuthProvider = ({children}) => {
     const clearCredentials = () => {
         router.push('/')
         pocketbase.authStore.clear()
-        setEmail(null)
         setOtpResponse(null)
         localStorage.removeItem('isNavigationMenuOpen')
     }
@@ -116,7 +112,6 @@ export const AuthProvider = ({children}) => {
                 setIsInvalid(true)
                 return
             }
-            setEmail(email)
             pocketbase.authStore.save(auth.token, auth.record)
             setOtpResponse(null)
             router.push("home")
@@ -131,7 +126,6 @@ export const AuthProvider = ({children}) => {
     }
 
     const value = {
-        email,
         otpResponse,
         requestSignInWithOTP,
         signInWithOTP,
