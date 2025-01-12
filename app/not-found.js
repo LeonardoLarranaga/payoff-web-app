@@ -1,14 +1,11 @@
 "use client"
 
-import {useAuth} from "@/contexts/auth-context"
+import pocketbase from "@/libraries/pocketbase"
 
 export default function NotFound() {
-
-    const { token } = useAuth()
-
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            {!token && (
+            {!pocketbase.authStore.isValid && (
                 <a href={'/home'}>
                     <img src="/images/icon.png" alt="App icon" className="w-14 h-14 mb-2"/>
                 </a>

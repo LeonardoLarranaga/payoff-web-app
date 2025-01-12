@@ -1,7 +1,6 @@
 'use client'
 
 import {createContext, useContext, useEffect} from "react"
-import {useAuth} from "@/contexts/auth-context"
 import pocketbase from "@/libraries/pocketbase"
 import {useLocalStorage} from "@/libraries/use-local-storage"
 
@@ -19,8 +18,6 @@ export const NavigationProvider = ({children}) => {
         setIsNavigationMenuOpen(!isNavigationMenuOpen)
     }
 
-    const { token } = useAuth()
-
     const [debtItems, setDebtItems] = useLocalStorage('menuItems', [])
 
     useEffect(() => {
@@ -34,7 +31,7 @@ export const NavigationProvider = ({children}) => {
     }, [])
 
     useEffect(() => {
-        if (token) {
+        if (pocketbase.authStore.isValid) {
             // Fetch debts for the first time
             const fetchDebts = async () => {
                 try {
@@ -92,7 +89,7 @@ export const NavigationProvider = ({children}) => {
         } else {
             setDebtItems([])
         }
-    }, [token])
+    }, [pocketbase.authStore.token, pocketbase.authStore.isValid])
 
     const value = {
         isNavigationMenuOpen,

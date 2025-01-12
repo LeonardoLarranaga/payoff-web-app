@@ -5,14 +5,13 @@ import {useNavigation} from "@/contexts/navigation-context"
 import {usePathname} from "next/navigation"
 import UserMenu from "@/components/navigation/user-menu"
 import {useEffect, useState} from "react"
-import {useAuth} from "@/contexts/auth-context"
 import AddDebt from "@/components/debts/add-debt/add-debt"
 import NavigationDebtItem from "@/components/navigation/navigation-debt-item"
 import {sidebarChevronIcon} from "@/libraries/icons"
+import pocketbase from "@/libraries/pocketbase"
 
 export default function Sidebar() {
     const { debtItems, isNavigationMenuOpen, setIsNavigationMenuOpen } = useNavigation()
-    const { token } = useAuth()
 
     const [showSidebar, setShowSidebar] = useState(true)
     const pathname = usePathname()
@@ -21,7 +20,7 @@ export default function Sidebar() {
 
     useEffect(() => {
         setShowSidebar(pathname !== '/')
-        if (!token) setIsNavigationMenuOpen(pathname !== '/')
+        if (!pocketbase.authStore.isValid) setIsNavigationMenuOpen(pathname !== '/')
     }, [pathname])
 
     if (!showSidebar || pathname === '/') return null

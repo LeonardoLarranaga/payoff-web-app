@@ -17,7 +17,6 @@ export const AuthProvider = ({children}) => {
     const [isLoading, setIsLoading] = useState(false)
 
     const [email, setEmail] = useLocalStorage('email', null)
-    const [token, setToken] = useLocalStorage('token', null)
 
     const router = useRouter()
 
@@ -40,7 +39,6 @@ export const AuthProvider = ({children}) => {
         router.push('/')
         pocketbase.authStore.clear()
         setEmail(null)
-        setToken(null)
         setOtpResponse(null)
         localStorage.removeItem('isNavigationMenuOpen')
     }
@@ -118,7 +116,6 @@ export const AuthProvider = ({children}) => {
                 setIsInvalid(true)
                 return
             }
-            setToken(auth.token)
             setEmail(email)
             pocketbase.authStore.save(auth.token, auth.record)
             setOtpResponse(null)
@@ -135,7 +132,6 @@ export const AuthProvider = ({children}) => {
 
     const value = {
         email,
-        token,
         otpResponse,
         requestSignInWithOTP,
         signInWithOTP,
