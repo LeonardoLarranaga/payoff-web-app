@@ -18,28 +18,31 @@ export const AuthProvider = ({children}) => {
 
     const [email, setEmail] = useLocalStorage('email', null)
     const [token, setToken] = useLocalStorage('token', null)
-    const [_, setIsNavigationMenuOpen] = useLocalStorage('isNavigationMenuOpen', true)
 
     const router = useRouter()
 
     useEffect(() => {
-        try {
-            if (pocketbase.authStore.token && pocketbase.authStore.isValid) {
-                if (window.location.pathname === '/') router.push("home")
-            } else clearCredentials()
-        } catch (error) {
-            console.log("Error loading auth store:", error)
-            clearCredentials()
+        const handleAuthChange = () => {
+            try {
+                if (pocketbase.authStore.token && pocketbase.authStore.isValid) {
+                    if (window.location.pathname === '/') router.push("home")
+                } else clearCredentials()
+            } catch (error) {
+                console.log("Error loading auth store:", error)
+                clearCredentials()
+            }
         }
-    }, [router])
+
+        handleAuthChange()
+    }, [router, pocketbase.authStore.token, pocketbase.authStore.isValid])
 
     const clearCredentials = () => {
+        router.push('/')
         pocketbase.authStore.clear()
         setEmail(null)
         setToken(null)
         setOtpResponse(null)
         localStorage.removeItem('isNavigationMenuOpen')
-        router.push('/')
     }
 
     const validateEmail = (email) => {
@@ -120,7 +123,7 @@ export const AuthProvider = ({children}) => {
             pocketbase.authStore.save(auth.token, auth.record)
             setOtpResponse(null)
             router.push("home")
-            setIsNavigationMenuOpen(true)
+            localStorage.setItem('isNavigationMenuOpen', true.toString())
         } catch (error) {
             console.error(error)
             setIsInvalid(true)

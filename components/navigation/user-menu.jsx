@@ -27,10 +27,11 @@ export default function UserMenu() {
     const [color, setColor] = useState("")
 
     useEffect(() => {
+        if (!pocketbase.authStore.record) return
         const color = pocketbase.authStore.record.debtHistory?.[0]?.color ?? "#2671D9"
         setColor(color)
         setNewColor(color)
-    }, [pocketbase.authStore.record.debtHistory?.[0]?.color])
+    }, [pocketbase.authStore.record])
 
     return (<>
         <Dropdown backdrop="blur">
