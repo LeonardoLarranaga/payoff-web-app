@@ -1,4 +1,4 @@
-import {Input} from "@nextui-org/react"
+import {Input} from "@heroui/react"
 import {magnifyingGlassIcon} from "@/libraries/icons"
 
 export default function TransactionsTableSearchBar({setFilterValue}) {

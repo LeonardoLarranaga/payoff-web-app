@@ -12,7 +12,7 @@ import {
     ModalContent,
     ModalHeader,
     useDisclosure
-} from "@nextui-org/react"
+} from "@heroui/react"
 import {useAuth} from "@/contexts/auth-context"
 import {emailIcon, logoutIcon, paintbrushIcon} from "@/libraries/icons"
 import {HexColorPicker} from "react-colorful"

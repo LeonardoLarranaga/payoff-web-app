@@ -1,4 +1,4 @@
-import {Button, InputOtp, Modal, ModalBody, ModalContent, ModalHeader, Spinner, useDisclosure} from "@nextui-org/react"
+import {Button, InputOtp, Modal, ModalBody, ModalContent, ModalHeader, Spinner, useDisclosure} from "@heroui/react"
 import {useAuth} from "@/contexts/auth-context"
 import {useEffect, useState} from "react"
 

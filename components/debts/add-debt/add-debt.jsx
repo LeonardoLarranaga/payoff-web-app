@@ -11,7 +11,7 @@ import {
     ModalHeader,
     Switch,
     useDisclosure
-} from "@nextui-org/react"
+} from "@heroui/react"
 import {useEffect, useState} from "react"
 import IconPicker from "@/components/debts/add-debt/icon-picker"
 import {HexColorPicker} from "react-colorful"

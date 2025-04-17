@@ -1,4 +1,4 @@
-import {Button, Input, Popover, PopoverContent, PopoverTrigger} from "@nextui-org/react"
+import {Button, Input, Popover, PopoverContent, PopoverTrigger} from "@heroui/react"
 import {Icon} from "@iconify/react"
 import {useEffect, useRef, useState} from "react"
 import {iconPickerChevron, iconPickerIcon} from "@/libraries/icons"

@@ -8,7 +8,7 @@ import {
     ModalHeader,
     Textarea,
     useDisclosure
-} from "@nextui-org/react"
+} from "@heroui/react"
 import {Icon} from "@iconify/react"
 import IconPicker from "@/components/debts/add-debt/icon-picker"
 import {useEffect, useState} from "react"

@@ -1,4 +1,4 @@
-import {Divider, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react"
+import {Divider, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@heroui/react"
 import {useNavigation} from "@/contexts/navigation-context"
 import UserMenu from "@/components/navigation/user-menu"
 import {useEffect, useState} from "react"

@@ -1,6 +1,6 @@
 'use client'
 
-import {Button, Image, Input} from "@nextui-org/react"
+import {Button, Image, Input} from "@heroui/react"
 import {useState} from "react"
 import {useAuth} from "@/contexts/auth-context"
 import {motion} from "framer-motion"

@@ -8,7 +8,7 @@ import {
     ModalBody,
     ModalContent,
     useDisclosure
-} from "@nextui-org/react"
+} from "@heroui/react"
 import pocketbase from "@/libraries/pocketbase"
 import AddTransaction from "@/components/debts/transactions/add-transaction"
 import {useState} from "react"

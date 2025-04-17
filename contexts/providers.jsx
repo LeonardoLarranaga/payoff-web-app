@@ -2,7 +2,7 @@
 
 import {AuthProvider} from "@/contexts/auth-context"
 import {DarkProvider} from "@/contexts/dark-contest"
-import {NextUIProvider} from "@nextui-org/react"
+import {HeroUIProvider} from "@heroui/react"
 import {ThemeProvider} from "next-themes"
 import {NavigationProvider} from "@/contexts/navigation-context"
 import Sidebar from "@/components/navigation/sidebar"
@@ -11,7 +11,7 @@ import NavigationModal from "@/components/navigation/navigation-modal"
 
 export const Providers = ({children}) => {
     return (
-        <NextUIProvider>
+        <HeroUIProvider>
             <AuthProvider>
                 <DarkProvider>
                     <ThemeProvider>
@@ -23,6 +23,6 @@ export const Providers = ({children}) => {
                     </ThemeProvider>
                 </DarkProvider>
             </AuthProvider>
-        </NextUIProvider>
+        </HeroUIProvider>
     )
 }

@@ -1,4 +1,4 @@
-import {Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react"
+import {Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@heroui/react"
 import {useCallback, useMemo, useState} from "react"
 import ActionsColumn from "@/components/debts/transactions/table/actions-column"
 import DescriptionColumn from "@/components/debts/transactions/table/description-column"
@@ -46,7 +46,7 @@ export default function TransactionsTable({debt}) {
     })
 
     const filteredTransactions = useMemo(() => {
-        let transactions = [...debt?.expand?.['transactions(debt)'] ?? []]
+        let transactions = [...(debt?.expand?.['transactions(debt)'] ?? [])]
 
         if (filterValue.trim()) {
             transactions = transactions.filter((transaction) =>
